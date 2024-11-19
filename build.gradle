@@ -25,8 +25,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'p5.comdis_p5'
-    mainClass = 'p5.comdis_p5.HelloApplication'
+    mainModule = 'comdis_5p'
+    mainClass = 'p5.Client.Client'
 }
 
 javafx {
@@ -35,7 +35,7 @@ javafx {
 }
 
 dependencies {
-
+    implementation 'org.postgresql:postgresql:42.6.0'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
