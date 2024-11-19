@@ -8,17 +8,17 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="216.0" prefWidth="385.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.cRegistrarse">
-    <TextField layoutX="25.0" layoutY="59.0" prefHeight="26.0" prefWidth="256.0" />
+    <TextField fx:id="nick" layoutX="25.0" layoutY="59.0" prefHeight="26.0" prefWidth="256.0" />
     <Label layoutX="25.0" layoutY="29.0" prefHeight="0.0" prefWidth="82.0" text="Nick" textFill="WHITE">
         <font>
             <Font name="System Italic" size="14.0" />
         </font>
     </Label>
-    <PasswordField layoutX="24.0" layoutY="138.0" prefHeight="26.0" prefWidth="256.0" />
+    <PasswordField fx:id="passwd" layoutX="24.0" layoutY="138.0" prefHeight="26.0" prefWidth="256.0" />
     <Label layoutX="25.0" layoutY="108.0" prefHeight="0.0" prefWidth="82.0" text="Contraseña" textFill="WHITE">
         <font>
             <Font name="System Italic" size="14.0" />
         </font>
     </Label>
-    <Button layoutX="317.0" layoutY="176.0" mnemonicParsing="false" text="Signup" />
+    <Button fx:id="registrar" layoutX="317.0" layoutY="176.0" mnemonicParsing="false" onAction="#clickRegistrar" text="Signup" />
 </AnchorPane>
