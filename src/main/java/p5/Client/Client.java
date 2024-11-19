@@ -1,4 +1,4 @@
-package p5.comdis_p5;
+package p5.Client;
 
 public class Client {
 

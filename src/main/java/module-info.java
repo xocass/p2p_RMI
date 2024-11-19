@@ -4,6 +4,8 @@ module p5.comdis_p5 {
     requires java.sql;
 
 
-    opens p5.comdis_p5 to javafx.fxml;
-    exports p5.comdis_p5;
+    opens p5.Server to javafx.fxml;
+    exports p5.Server;
+    exports p5.Client;
+    opens p5.Client to javafx.fxml;
 }
