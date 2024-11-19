@@ -1,6 +1,5 @@
 package p5.Server;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -27,7 +26,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     }
 
     @Override
-    public void registrarUsuario(String name, String passwd) throws RemoteException, SQLException {
+    public int registrarUsuario(String name, String passwd) throws RemoteException, SQLException {
         // Conectar a la base de datos
         conexionBD();
 
@@ -43,19 +42,23 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Usuario registrado correctamente: " + name);
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                    System.out.println("Conexión cerrada.");
+                }
+                return 1;
             } else {
                 System.out.println("No se pudo registrar el usuario.");
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                    System.out.println("Conexión cerrada.");
+                }
+                return 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error al registrar el usuario: " + e.getMessage());
             throw e; // Lanzar la excepción si ocurre un error
-        } finally {
-            // Cerrar conexión
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Conexión cerrada.");
-            }
         }
     }
 
