@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="681.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CInicioSesion">
+   <children>
+      <Label layoutX="69.0" layoutY="59.0" prefHeight="80.0" prefWidth="307.0" style="-fx-background-color: 4B0082;" text="INICIAR SESIÓN" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <TextField layoutX="69.0" layoutY="180.0" prefHeight="26.0" prefWidth="236.0" />
+      <Label layoutX="69.0" layoutY="148.0" prefHeight="0.0" prefWidth="82.0" style="-fx-background-color: 4B0082;" text="Nick" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Label>
+      <PasswordField layoutX="69.0" layoutY="257.0" prefHeight="26.0" prefWidth="236.0" />
+      <Label layoutX="69.0" layoutY="228.0" prefHeight="0.0" prefWidth="82.0" style="-fx-background-color: 4B0082;" text="Contraseña" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Label>
+      <Button layoutX="253.0" layoutY="319.0" mnemonicParsing="false" text="Login" />
+      <AnchorPane layoutX="439.0" prefHeight="400.0" prefWidth="242.0" style="-fx-background-color: #31113e;">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="242.0">
+               <children>
+                  <ImageView fitHeight="205.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@unclesam.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets left="24.0" right="18.0" top="80.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="0.0" prefWidth="82.0" style="-fx-text-fill: #000000;" text="Regístrate" underline="true">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
