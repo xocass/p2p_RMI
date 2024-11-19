@@ -14,19 +14,19 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="681.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CInicioSesion">
    <children>
-      <Label layoutX="69.0" layoutY="59.0" prefHeight="80.0" prefWidth="307.0" style="-fx-background-color: 4B0082;" text="INICIAR SESIÓN" textFill="WHITE">
+      <Label layoutX="69.0" layoutY="59.0" prefHeight="80.0" prefWidth="307.0"  text="INICIAR SESIÓN" textFill="WHITE">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
       <TextField layoutX="69.0" layoutY="180.0" prefHeight="26.0" prefWidth="236.0" />
-      <Label layoutX="69.0" layoutY="148.0" prefHeight="0.0" prefWidth="82.0" style="-fx-background-color: 4B0082;" text="Nick" textFill="WHITE">
+      <Label layoutX="69.0" layoutY="148.0" prefHeight="0.0" prefWidth="82.0" text="Nick" textFill="WHITE">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
       </Label>
       <PasswordField layoutX="69.0" layoutY="257.0" prefHeight="26.0" prefWidth="236.0" />
-      <Label layoutX="69.0" layoutY="228.0" prefHeight="0.0" prefWidth="82.0" style="-fx-background-color: 4B0082;" text="Contraseña" textFill="WHITE">
+      <Label layoutX="69.0" layoutY="228.0" prefHeight="0.0" prefWidth="82.0" text="Contraseña" textFill="WHITE">
          <font>
             <Font name="System Italic" size="14.0" />
          </font>
