@@ -62,4 +62,38 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    @Override
+    public int iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
+        conexionBD(); // Establecer conexión a la base de datos
+
+        String query = "SELECT COUNT(*) FROM usuarios WHERE nick = ? AND passwd = ?";
+        int resultado = 0;
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, name);
+            stmt.setString(2, passwd);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) { // Verifica si hay resultados
+                    resultado = rs.getInt(1) > 0 ? 1 : 0; // Si el conteo es mayor a 0, devuelve 1
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al iniciar sesión: " + e.getMessage());
+            throw e; // Lanzar la excepción si ocurre un error
+        } finally {
+            // Cerrar conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            }
+        }
+
+        return resultado;
+    }
+
+
 }
