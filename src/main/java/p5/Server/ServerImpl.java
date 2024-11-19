@@ -28,18 +28,35 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
     @Override
     public void registrarUsuario(String name, String passwd) throws RemoteException, SQLException {
+        // Conectar a la base de datos
         conexionBD();
 
-        // Crear consulta
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM usuario");
+        // Consulta SQL para insertar un usuario
+        String insertQuery = "INSERT INTO usuario (nick, passwd) VALUES (?, ?)";
 
-        // Leer resultados
-        while (rs.next()) {
-            System.out.println("Columna: " + rs.getString("nick"));
+        try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, name);
+            stmt.setString(2, passwd);
+
+            // Ejecutar la consulta
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Usuario registrado correctamente: " + name);
+            } else {
+                System.out.println("No se pudo registrar el usuario.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al registrar el usuario: " + e.getMessage());
+            throw e; // Lanzar la excepción si ocurre un error
+        } finally {
+            // Cerrar conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            }
         }
-
-        // Cerrar conexión
-        connection.close();
     }
+
 }

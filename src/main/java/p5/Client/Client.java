@@ -17,7 +17,7 @@ public class Client extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         registroRMI();
-        server.registrarUsuario("manu","manu");
+        server.registrarUsuario("mati","mati");
     }
 
 

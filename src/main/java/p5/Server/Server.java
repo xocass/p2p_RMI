@@ -34,8 +34,8 @@ public class Server{
         } // end catch
     } // end main
 
-    // This method starts a RMI registry on the local host, if it
-    // does not already exists at the specified port number.
+    // This method starts an RMI registry on the local host, if it
+    // does not already exist at the specified port number.
     private static void startRegistry(int RMIPortNum)
             throws RemoteException {
         try {
