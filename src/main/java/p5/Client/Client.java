@@ -3,8 +3,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import p5.Client.controllers.*;
 import p5.Server.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.rmi.Naming;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Client extends Application{
-
+    Stage stage;
     ServerInterface server;
     public static void main(String args[]) {
         launch();
@@ -32,6 +32,7 @@ public class Client extends Application{
         cRegistrarse controller = loader.getController();
         registroRMI();
         controller.setServer(server);*/
+        stage=primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
         primaryStage.setTitle("iniciar sesion");
         primaryStage.setScene(new Scene(loader.load(), 681.4, 400));
@@ -39,7 +40,7 @@ public class Client extends Application{
         primaryStage.show();
         CInicioSesion controller = loader.getController();
         registroRMI();
-        controller.setServer(server);
+        controller.init(server,this);
     }
 
 
@@ -59,5 +60,14 @@ public class Client extends Application{
             System.out.println("Exception in Client: " + e);
         }
     }
-
+    public void abrirRegistrar() throws IOException {
+        stage.setTitle("registrate");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VRegistrarse.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(),385,216);
+        cRegistrarse controller = fxmlLoader.getController();
+        controller.setServer(server);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
 }
