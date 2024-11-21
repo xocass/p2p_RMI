@@ -2,9 +2,7 @@ package p5.Server;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -23,9 +21,9 @@ public class Server{
             int RMIPortNum = Integer.parseInt(portNum);
             startRegistry(RMIPortNum);
             ServerImpl exportedObj = new ServerImpl();
-            String host = obtenerIPPublica();
+            String host = obtenerIPPrivada();
             System.out.println(host);
-            registryURL = "rmi://" + host + ":" + portNum + "/" + name;
+            registryURL = "rmi://192.168.56.1:1099/server";
             Naming.rebind(registryURL, exportedObj);
             /**/     System.out.println
 /**/        ("Server registered.  Registry currently contains:");
@@ -68,19 +66,14 @@ public class Server{
             System.out.println(names[i]);
     } //end listRegistry
 
-    public static String obtenerIPPublica() {
+    public static String obtenerIPPrivada() {
         try {
-            // URL del servicio para obtener la IP pública
-            URL url = new URL("http://ifconfig.me");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            // Leer la respuesta
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-                return in.readLine();
-            }
-        } catch (Exception e) {
+            // Obtener la dirección IP local
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            return inetAddress.getHostAddress();
+        } catch (UnknownHostException e) {
             e.printStackTrace();
-            return "Error obteniendo la IP pública: " + e.getMessage();
+            return "No se pudo obtener la IP privada";
         }
     }
 
