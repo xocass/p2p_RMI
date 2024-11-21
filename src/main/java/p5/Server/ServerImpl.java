@@ -3,9 +3,12 @@ package p5.Server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     private Connection connection;
+    private HashMap<String,String> conectados = new HashMap<>();
     public ServerImpl() throws RemoteException {
     }
 
@@ -31,7 +34,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         conexionBD();
 
         // Consulta SQL para insertar un usuario
-        String insertQuery = "INSERT INTO usuarios (nick, passwd) VALUES (?, ?)\n" +
+        String insertQuery = "INSERT INTO usuario (nick, passwd) VALUES (?, ?)\n" +
                 "ON CONFLICT (nick) DO NOTHING;\n";
 
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
@@ -64,7 +67,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     }
 
     @Override
-    public int iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
+    public HashMap<String,String> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
         conexionBD(); // Establecer conexión a la base de datos
 
         String query = "SELECT COUNT(*) FROM usuarios WHERE nick = ? AND passwd = ?";
@@ -78,7 +81,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) { // Verifica si hay resultados
-                    resultado = rs.getInt(1) > 0 ? 1 : 0; // Si el conteo es mayor a 0, devuelve 1
+                    resultado = 1;
                 }
             }
         } catch (SQLException e) {
@@ -93,8 +96,12 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             }
         }
 
-        return resultado;
+        if (resultado==1){
+            //conectados.put(name,ip);
+        }
+        return null;
     }
+
 
 
 }

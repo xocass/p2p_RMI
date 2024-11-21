@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -23,13 +24,17 @@ public class cRegistrarse {
     private PasswordField passwd;
     @FXML
     private Button registrar;
+    @FXML
+    private Label nodisponible;
 
     public void setServer(ServerInterface server){
         this.server=server;
     }
+
     @FXML
     public void clickRegistrar(ActionEvent event) throws SQLException, RemoteException {
         int val = server.registrarUsuario(nick.getText(),passwd.getText());
+        System.out.println(val);
         if (val==1){
             try {
                 // Cargar la nueva ventana
@@ -49,8 +54,8 @@ public class cRegistrarse {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
-
+        }else if (val==0){
+            nodisponible.setVisible(true);
         }
 
     }

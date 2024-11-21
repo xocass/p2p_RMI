@@ -2,7 +2,9 @@ package p5.Server;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -21,7 +23,9 @@ public class Server{
             int RMIPortNum = Integer.parseInt(portNum);
             startRegistry(RMIPortNum);
             ServerImpl exportedObj = new ServerImpl();
-            registryURL = "rmi://localhost:" + portNum + "/" + name;
+            String host = obtenerIPPublica();
+            System.out.println(host);
+            registryURL = "rmi://" + host + ":" + portNum + "/" + name;
             Naming.rebind(registryURL, exportedObj);
             /**/     System.out.println
 /**/        ("Server registered.  Registry currently contains:");
@@ -63,5 +67,21 @@ public class Server{
         for (int i=0; i < names.length; i++)
             System.out.println(names[i]);
     } //end listRegistry
+
+    public static String obtenerIPPublica() {
+        try {
+            // URL del servicio para obtener la IP pública
+            URL url = new URL("http://ifconfig.me");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            // Leer la respuesta
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                return in.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error obteniendo la IP pública: " + e.getMessage();
+        }
+    }
 
 }
