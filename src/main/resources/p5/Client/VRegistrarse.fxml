@@ -21,4 +21,9 @@
         </font>
     </Label>
     <Button fx:id="registrar" layoutX="317.0" layoutY="176.0" mnemonicParsing="false" onAction="#clickRegistrar" text="Signup" />
+   <Label fx:id="nodisponible" layoutX="25.0" layoutY="180.0" prefHeight="18.0" prefWidth="167.0" text="Ese nick no está disponible" textFill="RED" visible="false">
+      <font>
+         <Font name="System Italic" size="12.0" />
+      </font>
+   </Label>
 </AnchorPane>

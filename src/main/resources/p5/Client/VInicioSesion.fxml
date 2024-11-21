@@ -11,10 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="681.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CInicioSesion">
+<AnchorPane prefHeight="322.0" prefWidth="606.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CInicioSesion">
    <children>
-      <Label layoutX="69.0" layoutY="59.0" prefHeight="80.0" prefWidth="307.0"  text="INICIAR SESIÓN" textFill="WHITE">
+      <Label layoutX="69.0" layoutY="59.0" prefHeight="80.0" prefWidth="307.0" text="INICIAR SESIÓN" textFill="WHITE">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
@@ -34,7 +33,7 @@
       <Button layoutX="253.0" layoutY="319.0" mnemonicParsing="false" text="Login" />
       <AnchorPane layoutX="439.0" prefHeight="400.0" prefWidth="242.0" style="-fx-background-color: #31113e;">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="242.0">
+            <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="176.0">
                <children>
                   <ImageView fitHeight="205.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
