@@ -87,7 +87,6 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             }
             if (resultado==1){
                 HashMap<String,String> con = conectados;
-                con.put("2","2");
                 conectados.put(name,"no se");
                 return con;
             }else{
