@@ -11,6 +11,8 @@ import java.sql.SQLException;
 
 public class CInicioSesion {
     @FXML
+    private Label noExiste;
+    @FXML
     private TextField nickField;
     @FXML
     private TextField pswField;

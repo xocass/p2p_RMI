@@ -52,5 +52,10 @@
             </VBox>
          </children>
       </AnchorPane>
+      <Label fx:id="noExiste" layoutX="69.0" layoutY="314.0" prefHeight="36.0" prefWidth="142.0" text="Datos incorrectos" textFill="RED" visible="false">
+         <font>
+            <Font name="System Italic" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
