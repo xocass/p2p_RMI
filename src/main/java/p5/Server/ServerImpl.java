@@ -31,7 +31,8 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         conexionBD();
 
         // Consulta SQL para insertar un usuario
-        String insertQuery = "INSERT INTO usuario (nick, passwd) VALUES (?, ?)";
+        String insertQuery = "INSERT INTO usuarios (nick, passwd) VALUES (?, ?)\n" +
+                "ON CONFLICT (nick) DO NOTHING;\n";
 
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
             // Configurar los parámetros de la consulta

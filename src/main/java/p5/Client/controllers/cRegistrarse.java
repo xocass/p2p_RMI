@@ -1,9 +1,15 @@
 package p5.Client.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import p5.Server.ServerInterface;
 
 import java.rmi.RemoteException;
@@ -22,7 +28,30 @@ public class cRegistrarse {
         this.server=server;
     }
     @FXML
-    public void clickRegistrar() throws SQLException, RemoteException {
-        server.registrarUsuario(nick.getText(),passwd.getText());
+    public void clickRegistrar(ActionEvent event) throws SQLException, RemoteException {
+        int val = server.registrarUsuario(nick.getText(),passwd.getText());
+        if (val==1){
+            try {
+                // Cargar la nueva ventana
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
+                Parent root = loader.load();
+
+                // Crear un nuevo Stage
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Inicio Sesión");
+                stage.show();
+
+                // Cerrar la ventana actual
+                Node source = (Node) event.getSource();
+                Stage currentStage = (Stage) source.getScene().getWindow();
+                currentStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+
+        }
+
     }
 }
