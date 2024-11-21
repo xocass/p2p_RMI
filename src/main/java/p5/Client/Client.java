@@ -34,7 +34,8 @@ public class Client extends Application{
         controller.setServer(server);*/
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
         primaryStage.setTitle("iniciar sesion");
-        primaryStage.setScene(new Scene(loader.load(), 606, 322));
+        primaryStage.setScene(new Scene(loader.load(), 681.4, 400));
+        primaryStage.setResizable(false);
         primaryStage.show();
         CInicioSesion controller = loader.getController();
         registroRMI();
@@ -46,7 +47,7 @@ public class Client extends Application{
 
     private void registroRMI(){
         try {
-            String registryURL = "rmi://localhost:1099/server";
+            String registryURL = "rmi://172.20.10.2:1099/server";
             System.out.println(registryURL);
             // find the remote object and cast it to an interface object
             server = (ServerInterface) Naming.lookup(registryURL);

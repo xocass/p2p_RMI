@@ -23,7 +23,7 @@ public class Server{
             int RMIPortNum = Integer.parseInt(portNum);
             startRegistry(RMIPortNum);
             ServerImpl exportedObj = new ServerImpl();
-            String host = obtenerIPPublica();
+            String host = "172.20.10.3";
             System.out.println(host);
             registryURL = "rmi://" + host + ":" + portNum + "/" + name;
             Naming.rebind(registryURL, exportedObj);
