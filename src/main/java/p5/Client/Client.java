@@ -65,7 +65,7 @@ public class Client extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VRegistrarse.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),385,216);
         cRegistrarse controller = fxmlLoader.getController();
-        controller.setServer(server);
+        controller.setServer(server,this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
