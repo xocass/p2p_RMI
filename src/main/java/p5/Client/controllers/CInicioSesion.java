@@ -13,6 +13,7 @@ import p5.Server.ServerInterface;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class CInicioSesion {
     @FXML
@@ -34,7 +35,12 @@ public class CInicioSesion {
     }
     @FXML
     public void clickLogin() throws SQLException, RemoteException {
-        server.iniciarSesion(nickField.getText(),pswField.getText());
+        HashMap<String,String> usersCon = server.iniciarSesion(nickField.getText(),pswField.getText());
+        if(usersCon == null){
+            noExiste.setVisible(true);
+        }else{
+            System.out.println(usersCon);
+        }
     }
 
     public void init(ServerInterface server, Client main){

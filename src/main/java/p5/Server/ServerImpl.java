@@ -3,12 +3,13 @@ package p5.Server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     private Connection connection;
-    private HashMap<String,String> conectados = new HashMap<>();
     public ServerImpl() throws RemoteException {
     }
 
@@ -21,7 +22,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         try {
             // Establecer conexión
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Conexión exitosa a Supabase");
+            System.out.println("Conexion exitosa a Supabase");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,14 +49,14 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
                 System.out.println("Usuario registrado correctamente: " + name);
                 if (connection != null && !connection.isClosed()) {
                     connection.close();
-                    System.out.println("Conexión cerrada.");
+                    System.out.println("Conexion cerrada.");
                 }
                 return 1;
             } else {
                 System.out.println("No se pudo registrar el usuario.");
                 if (connection != null && !connection.isClosed()) {
                     connection.close();
-                    System.out.println("Conexión cerrada.");
+                    System.out.println("Conexion cerrada.");
                 }
                 return 0;
             }
@@ -70,7 +71,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     public HashMap<String,String> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
         conexionBD(); // Establecer conexión a la base de datos
 
-        String query = "SELECT COUNT(*) FROM usuarios WHERE nick = ? AND passwd = ?";
+        String query = "SELECT nick,passwd FROM usuario WHERE nick = ? AND passwd = ?";
         int resultado = 0;
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -84,6 +85,14 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
                     resultado = 1;
                 }
             }
+            if (resultado==1){
+                HashMap<String,String> con = conectados;
+                con.put("2","2");
+                conectados.put(name,"no se");
+                return con;
+            }else{
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error al iniciar sesión: " + e.getMessage());
@@ -92,14 +101,46 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             // Cerrar conexión
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Conexión cerrada.");
+                System.out.println("Conexion cerrada.");
             }
         }
+    }
 
-        if (resultado==1){
-            //conectados.put(name,ip);
+    public List<String> amigosConectados(String amigo) throws SQLException {
+        // Asegurarse de que la conexión está establecida antes de realizar la consulta
+        conexionBD();
+
+        List<String> amigos = new ArrayList<>();
+        // Consulta SQL para obtener todos los amigos del usuario
+        String query = "SELECT usuario1, usuario2 FROM amigos WHERE usuario1 = ? OR usuario2 = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, amigo);
+            stmt.setString(2, amigo);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String usuario1 = rs.getString("usuario1");
+                    String usuario2 = rs.getString("usuario2");
+
+                    // Verificar quién es el amigo, ya que uno de ellos será el usuario
+                    if (!usuario1.equals(amigo)) {
+                        amigos.add(usuario1);  // Usuario1 es amigo de 'amigo'
+                    }
+                    if (!usuario2.equals(amigo)) {
+                        amigos.add(usuario2);  // Usuario2 es amigo de 'amigo'
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al obtener los amigos de " + amigo + ": " + e.getMessage());
+            throw e;
         }
-        return null;
+
+        return amigos;
     }
 
 
