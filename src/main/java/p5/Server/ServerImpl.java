@@ -1,5 +1,6 @@
 package p5.Server;
 
+import p5.Client.Client;
 import p5.Client.ClientInterface;
 
 import java.rmi.RemoteException;
@@ -70,7 +71,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     }
 
     @Override
-    public List<String> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
+    public HashMap<String,ClientInterface> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
         conexionBD(); // Establecer conexión a la base de datos
 
         String query = "SELECT nick,passwd FROM usuario WHERE nick = ? AND passwd = ?";
@@ -90,10 +91,10 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             if (resultado==1){
                 List<String> amigos = obtenerAmigos(name);
 
-                List<String> amigosConectados = new ArrayList<>();
+                HashMap<String,ClientInterface> amigosConectados = new HashMap<>();
                 for (String amigo : amigos) {
                     if (conectados.containsKey(amigo)) { // Verificar si el amigo está conectado
-                        amigosConectados.add(amigo);
+                        amigosConectados.put(amigo,conectados.get(amigo));
                     }
                 }
                 return amigosConectados;
@@ -129,14 +130,14 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     public void notificarConexion(String name) throws RemoteException, SQLException {
         // Obtener la lista de amigos conectados del cliente que se conecta
         List<String> amigos = obtenerAmigos(name);
-
+        ClientInterface objNuevaConexion = conectados.get(name);
         for (String amigo : amigos) {
             if (conectados.containsKey(amigo)) {
                 ClientInterface amigoConectado = conectados.get(amigo);
 
                 // Notificar al amigo conectado que este cliente se ha conectado
                 try {
-                    amigoConectado.actualizarListaAmigosConectados(name,true);
+                    amigoConectado.actualizarListaAmigosConectados(name,objNuevaConexion,true);
                 } catch (RemoteException e) {
                     System.err.println("Error notificando a " + amigo + ": " + e.getMessage());
                 }

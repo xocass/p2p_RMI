@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,14 +82,21 @@ public class Client extends Application{
         stage.setResizable(false);
         stage.show();
     }
-    public void abrirPrincipal(List<String> amigosCon) throws IOException {
+    public void abrirPrincipal() throws IOException {
         stage.setTitle("");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         CPrincipal controller = fxmlLoader.getController();
-        controller.init(server,this,amigosCon);
+        controller.init(server,this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+
+    public void crearCliente(String nick,HashMap<String,ClientInterface> amigosCon) throws RemoteException, SQLException {
+        ClientImpl cRemoto = new ClientImpl(nick,amigosCon);
+        server.registrarCliente(nick, cRemoto);
+        server.notificarConexion(nick);
+        System.out.println("Cliente registrado en el servidor central.");
     }
 }

@@ -5,11 +5,11 @@ import java.util.HashMap;
 
 public class ClientImpl implements ClientInterface {
     private final String nombre;
-    private HashMap<String,ClientImpl> amigosConectados;
+    private HashMap<String,ClientInterface> amigosConectados;
 
-    public ClientImpl(String nombre) throws RemoteException {
+    public ClientImpl(String nombre,HashMap<String,ClientInterface> amigosConectados) throws RemoteException {
         this.nombre = nombre;
-        amigosConectados = new HashMap<>();
+        this.amigosConectados=amigosConectados;
     }
 
     public String getNombre() {
@@ -22,18 +22,14 @@ public class ClientImpl implements ClientInterface {
     }
 
     @Override
-    public void actualizarListaAmigosConectados(String amigo,boolean conectado) throws RemoteException {
-        if (conectado) {
-            if (!amigosConectados.contains(amigo)) {
-                amigosConectados.add(amigo);
+    public void actualizarListaAmigosConectados(String amigo,ClientInterface objeto,boolean conectado) throws RemoteException {
+        if (!amigosConectados.containsKey(amigo)) {
+                amigosConectados.put(amigo, objeto);
                 System.out.println("Amigo conectado: " + amigo);
+            } else {
+                System.out.println("No se pudo obtener la referencia del amigo: " + amigo);
             }
-        } else {
-            listaAmigosConectados.remove(amigo);
-            System.out.println("Amigo desconectado: " + amigo);
         }
 
     }
 
-
-}

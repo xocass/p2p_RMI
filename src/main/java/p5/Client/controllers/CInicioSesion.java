@@ -39,16 +39,13 @@ public class CInicioSesion {
     @FXML
     public void clickLogin() throws SQLException, IOException {
         String nick = nickField.getText();
-        List<String> amigosCon = server.iniciarSesion(nickField.getText(),pswField.getText());
+        HashMap<String,ClientInterface> amigosCon = server.iniciarSesion(nickField.getText(),pswField.getText());
         if(amigosCon == null){
             noExiste.setVisible(true);
         }else{
             System.out.println(amigosCon);
-            ClientImpl cRemoto = new ClientImpl(nick);
-            server.registrarCliente(nick, cRemoto);
-            System.out.println("Cliente registrado en el servidor central.");
-
-            main.abrirPrincipal(amigosCon);
+            main.crearCliente(nick,amigosCon);
+            main.abrirPrincipal();
         }
     }
 

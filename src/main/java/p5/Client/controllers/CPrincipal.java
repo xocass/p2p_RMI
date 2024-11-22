@@ -24,13 +24,11 @@ public class CPrincipal {
     private Button enviar;
     private ServerInterface server;
     private Client client;
-    private List<String> amigosCon = new ArrayList<>();
 
     @FXML
-    public void init(ServerInterface server, Client client, List<String> amigosCon){
+    public void init(ServerInterface server, Client client){
         this.server=server;
         this.client=client;
-        this.amigosCon=amigosCon;
     }
 
 

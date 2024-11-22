@@ -5,6 +5,6 @@ import java.rmi.RemoteException;
 
 public interface ClientInterface extends Remote {
     void enviarMensaje(String mensaje) throws RemoteException;
-    void actualizarListaAmigosConectados(String amigo,boolean conectado) throws RemoteException;
+    void actualizarListaAmigosConectados(String amigo,ClientInterface objeto,boolean conectado) throws RemoteException;
 }
 
