@@ -1,16 +1,20 @@
 package p5.Server;
 
+import p5.Client.ClientInterface;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     private Connection connection;
+    private final HashMap<String, ClientInterface> clientesRegistrados;
+
     public ServerImpl() throws RemoteException {
+        clientesRegistrados = new HashMap<>();
     }
 
     private void conexionBD(){
@@ -105,7 +109,18 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
-    public List<String> amigosConectados(String amigo) throws SQLException {
+    @Override
+    public void registrarCliente(String nombre, ClientInterface referencia) throws RemoteException {
+        clientesRegistrados.put(nombre, referencia);
+        System.out.println("Cliente registrado: " + nombre);
+    }
+
+    @Override
+    public ClientInterface obtenerCliente(String nombre) throws RemoteException {
+        return clientesRegistrados.get(nombre);
+    }
+
+    public List<String> obtenerAmigos(String amigo) throws SQLException {
         // Asegurarse de que la conexión está establecida antes de realizar la consulta
         conexionBD();
 

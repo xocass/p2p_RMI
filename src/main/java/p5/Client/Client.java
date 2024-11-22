@@ -5,16 +5,14 @@ import p5.Client.controllers.*;
 import p5.Server.*;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.util.ArrayList;
-import java.util.List;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.util.HashMap;
+
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class Client extends Application{
     Stage stage;
@@ -48,7 +46,7 @@ public class Client extends Application{
 
     private void registroRMI(){
         try {
-            String registryURL = "rmi://172.20.10.2:1099/server";
+            String registryURL = "rmi://192.168.205.133/server";
             System.out.println(registryURL);
             // find the remote object and cast it to an interface object
             server = (ServerInterface) Naming.lookup(registryURL);
@@ -60,12 +58,33 @@ public class Client extends Application{
             System.out.println("Exception in Client: " + e);
         }
     }
+
     public void abrirRegistrar() throws IOException {
         stage.setTitle("registrate");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VRegistrarse.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),385,216);
         cRegistrarse controller = fxmlLoader.getController();
-        controller.setServer(server,this);
+        controller.init(server,this);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public void abrirInicioSesion() throws IOException {
+        stage.setTitle("inicio sesion");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 681.4, 400);
+        CInicioSesion controller = fxmlLoader.getController();
+        controller.init(server,this);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public void abrirPrincipal(HashMap<String,String> usersCon) throws IOException {
+        stage.setTitle("");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
+        CPrincipal controller = fxmlLoader.getController();
+        controller.init(server,this,usersCon);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

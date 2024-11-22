@@ -34,12 +34,13 @@ public class CInicioSesion {
         main.abrirRegistrar();
     }
     @FXML
-    public void clickLogin() throws SQLException, RemoteException {
+    public void clickLogin() throws SQLException, IOException {
         HashMap<String,String> usersCon = server.iniciarSesion(nickField.getText(),pswField.getText());
         if(usersCon == null){
             noExiste.setVisible(true);
         }else{
             System.out.println(usersCon);
+            main.abrirPrincipal(usersCon);
         }
     }
 

@@ -4,7 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import p5.Client.Client;
 import p5.Server.ServerInterface;
+
+import java.util.HashMap;
 
 public class CPrincipal {
     @FXML
@@ -18,9 +21,15 @@ public class CPrincipal {
     @FXML
     private Button enviar;
     private ServerInterface server;
+    private Client client;
+    private HashMap<String,String> usersCon;
 
     @FXML
-    public void init(){
-
+    public void init(ServerInterface server, Client client, HashMap<String,String> usersCon){
+        this.server=server;
+        this.client=client;
+        this.usersCon=usersCon;
     }
+
+
 }

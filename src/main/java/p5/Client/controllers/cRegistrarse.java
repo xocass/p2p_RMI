@@ -24,7 +24,7 @@ public class cRegistrarse {
     private Label nodisponible;
     private Client main;
 
-    public void setServer(ServerInterface server,Client client){
+    public void init(ServerInterface server, Client client){
         this.main = client;
         this.server=server;
     }
@@ -35,7 +35,7 @@ public class cRegistrarse {
         System.out.println(val);
         if (val==1){
             try {
-                //main
+                main.abrirInicioSesion();
             } catch (Exception e) {
                 e.printStackTrace();
             }
