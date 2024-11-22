@@ -11,10 +11,8 @@ import java.util.List;
 
 public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     private Connection connection;
-    private final HashMap<String, ClientInterface> clientesRegistrados;
 
     public ServerImpl() throws RemoteException {
-        clientesRegistrados = new HashMap<>();
     }
 
     private void conexionBD(){
@@ -72,7 +70,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     }
 
     @Override
-    public HashMap<String,String> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
+    public List<String> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
         conexionBD(); // Establecer conexión a la base de datos
 
         String query = "SELECT nick,passwd FROM usuario WHERE nick = ? AND passwd = ?";
@@ -90,9 +88,16 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
                 }
             }
             if (resultado==1){
-                HashMap<String,String> con = conectados;
-                conectados.put(name,"no se");
-                return con;
+                List<String> amigos = obtenerAmigos(name);
+
+                List<String> amigosConectados = new ArrayList<>();
+                for (String amigo : amigos) {
+                    if (conectados.containsKey(amigo)) { // Verificar si el amigo está conectado
+                        amigosConectados.add(amigo);
+                    }
+                }
+                return amigosConectados;
+
             }else{
                 return null;
             }
@@ -111,14 +116,34 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
     @Override
     public void registrarCliente(String nombre, ClientInterface referencia) throws RemoteException {
-        clientesRegistrados.put(nombre, referencia);
+        conectados.put(nombre, referencia);
         System.out.println("Cliente registrado: " + nombre);
     }
 
     @Override
     public ClientInterface obtenerCliente(String nombre) throws RemoteException {
-        return clientesRegistrados.get(nombre);
+        return conectados.get(nombre);
     }
+
+    @Override
+    public void notificarConexion(String name) throws RemoteException, SQLException {
+        // Obtener la lista de amigos conectados del cliente que se conecta
+        List<String> amigos = obtenerAmigos(name);
+
+        for (String amigo : amigos) {
+            if (conectados.containsKey(amigo)) {
+                ClientInterface amigoConectado = conectados.get(amigo);
+
+                // Notificar al amigo conectado que este cliente se ha conectado
+                try {
+                    amigoConectado.actualizarListaAmigosConectados(name,true);
+                } catch (RemoteException e) {
+                    System.err.println("Error notificando a " + amigo + ": " + e.getMessage());
+                }
+            }
+        }
+    }
+
 
     public List<String> obtenerAmigos(String amigo) throws SQLException {
         // Asegurarse de que la conexión está establecida antes de realizar la consulta

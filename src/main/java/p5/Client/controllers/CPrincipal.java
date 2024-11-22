@@ -7,7 +7,9 @@ import javafx.scene.layout.VBox;
 import p5.Client.Client;
 import p5.Server.ServerInterface;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CPrincipal {
     @FXML
@@ -22,13 +24,13 @@ public class CPrincipal {
     private Button enviar;
     private ServerInterface server;
     private Client client;
-    private HashMap<String,String> usersCon;
+    private List<String> amigosCon = new ArrayList<>();
 
     @FXML
-    public void init(ServerInterface server, Client client, HashMap<String,String> usersCon){
+    public void init(ServerInterface server, Client client, List<String> amigosCon){
         this.server=server;
         this.client=client;
-        this.usersCon=usersCon;
+        this.amigosCon=amigosCon;
     }
 
 

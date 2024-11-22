@@ -10,6 +10,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.HashMap;
+import java.util.List;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ import javafx.scene.Scene;
 public class Client extends Application{
     Stage stage;
     ServerInterface server;
+
     public static void main(String args[]) {
         launch();
     }
@@ -79,12 +81,12 @@ public class Client extends Application{
         stage.setResizable(false);
         stage.show();
     }
-    public void abrirPrincipal(HashMap<String,String> usersCon) throws IOException {
+    public void abrirPrincipal(List<String> amigosCon) throws IOException {
         stage.setTitle("");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         CPrincipal controller = fxmlLoader.getController();
-        controller.init(server,this,usersCon);
+        controller.init(server,this,amigosCon);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
