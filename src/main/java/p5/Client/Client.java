@@ -49,7 +49,7 @@ public class Client extends Application{
 
     private void registroRMI(){
         try {
-            String registryURL = "rmi://192.168.205.133/server";
+            String registryURL = "rmi://localhost/server";
             System.out.println(registryURL);
             // find the remote object and cast it to an interface object
             server = (ServerInterface) Naming.lookup(registryURL);

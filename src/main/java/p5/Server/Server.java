@@ -21,7 +21,7 @@ public class Server{
             int RMIPortNum = Integer.parseInt(portNum);
             startRegistry(RMIPortNum);
             ServerImpl exportedObj = new ServerImpl();
-            registryURL = "rmi://192.168.205.133/server";
+            registryURL = "rmi://localhost/server";
             Naming.rebind(registryURL, exportedObj);
             /**/     System.out.println
 /**/        ("Server registered.  Registry currently contains:");

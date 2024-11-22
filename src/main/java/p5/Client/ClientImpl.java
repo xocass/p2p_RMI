@@ -1,9 +1,10 @@
 package p5.Client;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 
-public class ClientImpl implements ClientInterface {
+public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     private final String nombre;
     private HashMap<String,ClientInterface> amigosConectados;
 
