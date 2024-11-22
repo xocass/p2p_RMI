@@ -18,19 +18,29 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     }
 
     @Override
-    public void enviarMensaje(String mensaje) throws RemoteException {
+    public void enviarMensaje(String mensaje,String name) throws RemoteException {
         System.out.println(mensaje);
     }
 
     @Override
     public void actualizarListaAmigosConectados(String amigo,ClientInterface objeto,boolean conectado) throws RemoteException {
-        if (!amigosConectados.containsKey(amigo)) {
+        if(conectado){
+            if (!amigosConectados.containsKey(amigo)) {
                 amigosConectados.put(amigo, objeto);
+                //main.actualizarVista -> acutaliza lista de chats
                 System.out.println("Amigo conectado: " + amigo);
             } else {
                 System.out.println("No se pudo obtener la referencia del amigo: " + amigo);
             }
+        }else{
+            amigosConectados.remove(amigo, objeto);
+            //main.actualizarVista -> acutaliza lista de chats
+            System.out.println("Amigo desconectado: " + amigo);
         }
-
     }
+
+
+    //onAction boton de enviar -> main.nuevoMensaje(str,nombre);
+
+}
 

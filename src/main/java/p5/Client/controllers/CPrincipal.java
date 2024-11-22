@@ -31,5 +31,9 @@ public class CPrincipal {
         this.client=client;
     }
 
+    public void nuevoMensaje(String mensaje, String name){
+
+    }
+
 
 }

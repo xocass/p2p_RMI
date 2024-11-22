@@ -9,6 +9,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     private Connection connection;
@@ -34,6 +36,13 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
     @Override
     public int registrarUsuario(String name, String passwd) throws RemoteException, SQLException {
+        // Hashear la contraseña
+        String hashedPasswd = hashPassword(passwd);
+        if (hashedPasswd == null) {
+            System.err.println("Error al hashear la contraseña.");
+            return 0;
+        }
+
         // Conectar a la base de datos
         conexionBD();
 
@@ -44,7 +53,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
             // Configurar los parámetros de la consulta
             stmt.setString(1, name);
-            stmt.setString(2, passwd);
+            stmt.setString(2, hashedPasswd);
 
             // Ejecutar la consulta
             int rowsAffected = stmt.executeUpdate();
@@ -74,18 +83,25 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     public HashMap<String,ClientInterface> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
         conexionBD(); // Establecer conexión a la base de datos
 
-        String query = "SELECT nick,passwd FROM usuario WHERE nick = ? AND passwd = ?";
+        String query = "SELECT nick,passwd FROM usuario WHERE nick = ?";
         int resultado = 0;
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             // Configurar los parámetros de la consulta
             stmt.setString(1, name);
-            stmt.setString(2, passwd);
 
             // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) { // Verifica si hay resultados
-                    resultado = 1;
+                if (rs.next()) { // Verifica si la contraseña es válida
+                    String hashAlmacenado = rs.getString("passwd");
+
+                    // Hashear la contraseña ingresada para comparar
+                    String hashIngresado = hashPassword(passwd);
+
+                    // Comparar los hashes
+                    if (hashAlmacenado.equals(hashIngresado)) {
+                        resultado = 1;
+                    }
                 }
             }
             if (resultado==1){
@@ -183,6 +199,20 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         return amigos;
     }
 
-
+    // Método para hashear la contraseña (algoritmo SHA-256)
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b)); // Convertir byte a hexadecimal
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

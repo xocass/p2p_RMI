@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 public class Client extends Application{
     Stage stage;
     ServerInterface server;
+    private CPrincipal cPrincipal;
 
     public static void main(String args[]) {
         launch();
@@ -86,8 +87,8 @@ public class Client extends Application{
         stage.setTitle("");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
-        CPrincipal controller = fxmlLoader.getController();
-        controller.init(server,this);
+        cPrincipal = fxmlLoader.getController();
+        cPrincipal.init(server,this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -98,5 +99,9 @@ public class Client extends Application{
         server.registrarCliente(nick, cRemoto);
         server.notificarConexion(nick);
         System.out.println("Cliente registrado en el servidor central.");
+    }
+
+    public void nuevoMensaje(String mensaje, String name){
+        cPrincipal.nuevoMensaje(mensaje,name);
     }
 }
