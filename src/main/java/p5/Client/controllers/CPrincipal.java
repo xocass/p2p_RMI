@@ -28,10 +28,17 @@ public class CPrincipal {
     private ServerInterface server;
     private Client main;
 
-    @FXML
-    public void init(ServerInterface server, Client client, ArrayList<String> amigos,Client main) throws IOException {
+    public void init(ServerInterface server, ArrayList<String> amigos,Client main) throws IOException {
         this.server=server;
         this.main=main;
+        for(String s:amigos){
+            FXMLLoader loader = main.crearTemp();
+            boxAmigos.getChildren().add(loader.load());
+            CTemplateAmigo controller = loader.getController();
+            controller.setNick(s);
+        }
+    }
+    public void actualizarAmigos(ArrayList<String> amigos) throws IOException {
         for(String s:amigos){
             FXMLLoader loader = main.crearTemp();
             boxAmigos.getChildren().add(loader.load());
