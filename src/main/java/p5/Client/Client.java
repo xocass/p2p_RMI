@@ -1,5 +1,6 @@
 package p5.Client;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import p5.Client.controllers.*;
 import p5.Server.*;
@@ -92,7 +93,7 @@ public class Client extends Application{
         return new FXMLLoader(getClass().getResource("VTemplateAmigo.fxml"));
     }
     public void abrirPrincipal() throws IOException {
-        stage.setTitle("");
+        stage.setTitle(cRemoto.getNombre());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         cPrincipal = fxmlLoader.getController();
@@ -112,4 +113,15 @@ public class Client extends Application{
     public void nuevoMensaje(String mensaje, String name){
         //cPrincipal.nuevoMensaje(mensaje,name);
     }
+
+    public void actualizarListaAmigos(ArrayList<String> amigos) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                cPrincipal.actualizarAmigos(amigos);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
 }

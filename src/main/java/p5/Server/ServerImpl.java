@@ -3,6 +3,7 @@ package p5.Server;
 import p5.Client.Client;
 import p5.Client.ClientInterface;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -154,7 +155,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
                 // Notificar al amigo conectado que este cliente se ha conectado
                 try {
                     amigoConectado.actualizarListaAmigosConectados(name,objNuevaConexion,true);
-                } catch (RemoteException e) {
+                } catch (IOException e) {
                     System.err.println("Error notificando a " + amigo + ": " + e.getMessage());
                 }
             }
