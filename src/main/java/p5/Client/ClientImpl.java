@@ -2,7 +2,9 @@ package p5.Client;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     private final String nombre;
@@ -15,8 +17,8 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
         this.main = main;
     }
 
-    public HashMap<String, ClientInterface> getAmigosConectados() {
-        return amigosConectados;
+    public List<String> getNombresAmigos(){
+        return new ArrayList<>(amigosConectados.keySet());
     }
 
     public String getNombre() {
