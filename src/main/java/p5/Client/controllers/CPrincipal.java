@@ -29,7 +29,7 @@ public class CPrincipal {
     private Client main;
 
     @FXML
-    public void init(ServerInterface server, Client client, ArrayList<String> amigos,Client main) throws IOException {
+    public void init(ServerInterface server, ArrayList<String> amigos,Client main) throws IOException {
         this.server=server;
         this.main=main;
         for(String s:amigos){

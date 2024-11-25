@@ -96,7 +96,7 @@ public class Client extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         cPrincipal = fxmlLoader.getController();
-        cPrincipal.init(server,this,(ArrayList<String>)cRemoto.getNombresAmigos(),this);
+        cPrincipal.init(server,(ArrayList<String>)cRemoto.getNombresAmigos(),this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
