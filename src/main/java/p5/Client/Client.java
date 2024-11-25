@@ -63,6 +63,8 @@ public class Client extends Application{
         }
     }
 
+
+
     public void abrirRegistrar() throws IOException {
         stage.setTitle("registrate");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VRegistrarse.fxml"));
@@ -95,7 +97,7 @@ public class Client extends Application{
     }
 
     public void crearCliente(String nick,HashMap<String,ClientInterface> amigosCon) throws RemoteException, SQLException {
-        ClientImpl cRemoto = new ClientImpl(nick,amigosCon);
+        ClientImpl cRemoto = new ClientImpl(nick,amigosCon,this);
         server.registrarCliente(nick, cRemoto);
         server.notificarConexion(nick);
         System.out.println("Cliente registrado en el servidor central.");

@@ -214,5 +214,96 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             return null;
         }
     }
+    @Override
+    public void anhadirSolicitud(String solicitante, String solicitado) throws SQLException {
+        conexionBD();
+        String insertQuery = "INSERT INTO solicitudes (solicitante, solicitado) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, solicitante);
+            stmt.setString(2, solicitado);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al añadir amigos: " + e.getMessage());
+            throw e; // Propagar la excepción si ocurre un error
+        } finally {
+            // Cerrar la conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            }
+        }
+    }
+    @Override
+    public void aceptarSolicitud(String solicitante, String solicitado) throws SQLException {
+        conexionBD();
+        quitarSolicitud(solicitante,solicitado);
+        anhadirAmigos(solicitante,solicitado);
+    }
+
+    @Override
+    public void rechazarSolicitud(String solicitante, String solicitado) throws SQLException {
+        conexionBD();
+        quitarSolicitud(solicitante,solicitado);
+    }
+
+    private void quitarSolicitud(String solicitante, String solicitado) throws SQLException {
+        // Consulta SQL para eliminar la solicitud correspondiente
+        String deleteQuery = "DELETE FROM solicitudes WHERE solicitante = ? AND solicitado = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, solicitante);
+            stmt.setString(2, solicitado);
+
+            // Ejecutar la consulta
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Solicitud eliminada correctamente.");
+            } else {
+                System.out.println("No se encontró ninguna solicitud para eliminar.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al eliminar la solicitud: " + e.getMessage());
+            throw e; // Propagar la excepción si ocurre un error
+        } finally {
+            // Cerrar la conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            }
+        }
+    }
+
+    private void anhadirAmigos(String usuario1, String usuario2) throws SQLException {
+        // Consulta SQL para insertar una nueva relación de amigos
+        String insertQuery = "INSERT INTO amigos (usuario1, usuario2) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, usuario1);
+            stmt.setString(2, usuario2);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Amistad añadida correctamente entre " + usuario1 + " y " + usuario2);
+            } else {
+                System.out.println("No se pudo añadir la amistad.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al añadir amigos: " + e.getMessage());
+            throw e; // Propagar la excepción si ocurre un error
+        } finally {
+            // Cerrar la conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            }
+        }
+    }
+
 
 }

@@ -7,10 +7,16 @@ import java.util.HashMap;
 public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     private final String nombre;
     private HashMap<String,ClientInterface> amigosConectados;
+    private Client main;
 
-    public ClientImpl(String nombre,HashMap<String,ClientInterface> amigosConectados) throws RemoteException {
+    public ClientImpl(String nombre,HashMap<String,ClientInterface> amigosConectados,Client main) throws RemoteException {
         this.nombre = nombre;
         this.amigosConectados=amigosConectados;
+        this.main = main;
+    }
+
+    public HashMap<String, ClientInterface> getAmigosConectados() {
+        return amigosConectados;
     }
 
     public String getNombre() {

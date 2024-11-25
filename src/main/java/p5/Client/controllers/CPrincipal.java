@@ -23,12 +23,12 @@ public class CPrincipal {
     @FXML
     private Button enviar;
     private ServerInterface server;
-    private Client client;
+    private Client main;
 
     @FXML
-    public void init(ServerInterface server, Client client){
+    public void init(ServerInterface server, Client main){
         this.server=server;
-        this.client=client;
+        this.main=main;
     }
 
     public void nuevoMensaje(String mensaje, String name){
