@@ -3,6 +3,7 @@ package p5.Server;
 import p5.Client.Client;
 import p5.Client.ClientInterface;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -154,7 +155,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
                 // Notificar al amigo conectado que este cliente se ha conectado
                 try {
                     amigoConectado.actualizarListaAmigosConectados(name,objNuevaConexion,true);
-                } catch (RemoteException e) {
+                } catch (IOException e) {
                     System.err.println("Error notificando a " + amigo + ": " + e.getMessage());
                 }
             }
@@ -304,6 +305,43 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             }
         }
     }
+
+    public ArrayList<String> buscarSolicitudesUsuario(String name) throws RemoteException, SQLException {
+        // Conectar a la base de datos
+        conexionBD();
+
+        // Lista para almacenar los nombres de los solicitantes
+        ArrayList<String> solicitantes = new ArrayList<>();
+
+        // Consulta SQL para obtener los solicitantes donde "solicitado" es "name"
+        String query = "SELECT solicitante FROM solicitudes WHERE solicitado = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            // Configurar el parámetro de la consulta
+            stmt.setString(1, name);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Recorrer el resultado y agregar los nombres a la lista
+                while (rs.next()) {
+                    solicitantes.add(rs.getString("solicitante"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al buscar las solicitudes para el usuario " + name + ": " + e.getMessage());
+            throw e; // Relanzar la excepción si ocurre un error
+        } finally {
+            // Cerrar la conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            }
+        }
+
+        return solicitantes;
+    }
+
 
 
 }

@@ -1,5 +1,6 @@
 package p5.Client;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     }
 
     @Override
-    public void actualizarListaAmigosConectados(String amigo,ClientInterface objeto,boolean conectado) throws RemoteException {
+    public void actualizarListaAmigosConectados(String amigo,ClientInterface objeto,boolean conectado) throws IOException {
         if(conectado){
             if (!amigosConectados.containsKey(amigo)) {
                 amigosConectados.put(amigo, objeto);
@@ -45,6 +46,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
             //main.actualizarVista -> acutaliza lista de chats
             System.out.println("Amigo desconectado: " + amigo);
         }
+        main.actualizarListaAmigos(getNombresAmigos());
     }
 
 
