@@ -17,9 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
 public class Client extends Application{
-    Stage stage;
-    ServerInterface server;
+    private Stage stage;
+    private ServerInterface server;
     private CPrincipal cPrincipal;
+    private ClientImpl cRemoto;
 
     public static void main(String args[]) {
         launch();
@@ -90,14 +91,14 @@ public class Client extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         cPrincipal = fxmlLoader.getController();
-        //cPrincipal.init(server,this,);
+        cPrincipal.init(server,this,cRemoto.getNombresAmigos());
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
     public void crearCliente(String nick,HashMap<String,ClientInterface> amigosCon) throws RemoteException, SQLException {
-        ClientImpl cRemoto = new ClientImpl(nick,amigosCon,this);
+        cRemoto = new ClientImpl(nick,amigosCon,this);
         server.registrarCliente(nick, cRemoto);
         server.notificarConexion(nick);
         System.out.println("Cliente registrado en el servidor central.");
