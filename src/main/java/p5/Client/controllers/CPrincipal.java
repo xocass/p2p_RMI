@@ -11,6 +11,7 @@ import p5.Client.Client;
 import p5.Server.ServerInterface;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class CPrincipal {
     public void actualizarAmigos(ArrayList<String> amigos) throws IOException {
         boxAmigos.getChildren().clear();
         for(String s:amigos){
-            FXMLLoader loader = main.crearTemp();
+            FXMLLoader loader = main.crearTemp("amigos");
             boxAmigos.getChildren().add(loader.load());
             CTemplateAmigo controller = loader.getController();
             controller.setNick(s);
@@ -80,6 +81,10 @@ public class CPrincipal {
         }
     }
 
+    @FXML
+    public void clickSolicitudes() throws SQLException, IOException {
+        main.abrirSolicitudes();
+    }
 
 
 

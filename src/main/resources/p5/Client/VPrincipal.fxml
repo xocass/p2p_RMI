@@ -21,6 +21,6 @@
       </ScrollPane>
       <TextField fx:id="msg" layoutX="156.0" layoutY="361.0" prefHeight="26.0" prefWidth="369.0" />
       <Button fx:id="enviar" layoutX="535.0" layoutY="362.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="53.0" text="Send" />
-      <Button fx:id="solicitudes" layoutX="7.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="132.0" text="solicitudes" />
+      <Button fx:id="solicitudes" layoutX="7.0" layoutY="8.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="132.0" text="solicitudes" onAction="#clickSolicitudes"/>
    </children>
 </AnchorPane>

@@ -89,9 +89,19 @@ public class Client extends Application{
         stage.show();
     }
 
-    public FXMLLoader crearTemp(){
-        return new FXMLLoader(getClass().getResource("VTemplateAmigo.fxml"));
+    public FXMLLoader crearTemp(String opcion){
+        switch(opcion){
+            case "amigos":
+                return new FXMLLoader(getClass().getResource("VTemplateAmigo.fxml"));
+            case "solicitudes":
+                return new FXMLLoader(getClass().getResource("VTemplateSolicitud.fxml"));
+            default:
+                System.out.println("MAL PASADO EL ARGUMENTO A CREARTEMP");
+                break;
+        }
+        return null;
     }
+
     public void abrirPrincipal() throws IOException {
         stage.setTitle(cRemoto.getNombre());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
@@ -122,6 +132,16 @@ public class Client extends Application{
                 throw new RuntimeException(e);
             }
         });
+    }
+    public void abrirSolicitudes() throws IOException, SQLException {
+        stage.setTitle("solicitudes");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VSolicitudes.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 300, 270);
+        CSolicitudes cSolicitudes = fxmlLoader.getController();
+        cSolicitudes.init(server,(ArrayList<String>)server.buscarSolicitudesUsuario(cRemoto.getNombre()),this);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
 }

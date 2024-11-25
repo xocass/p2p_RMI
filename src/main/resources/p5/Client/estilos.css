@@ -12,6 +12,9 @@
 	-fx-background-radius: 10;
 }
 
+.light-hover {
+	-fx-background-color: #552264;
+}
 .light-hover:hover {
-    -fx-background-color: #562266; /* Cambia el color de fondo cuando el mouse está encima */
+    -fx-background-color: #804180; /* Cambia el color de fondo cuando el mouse está encima */
 }
