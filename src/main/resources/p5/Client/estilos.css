@@ -1,0 +1,17 @@
+.bordered-msg {
+    -fx-border-radius: 30; 
+    -fx-background-radius: 30;   
+	-fx-border-color:  #DFDFDF; 
+	-fx-background-color:  #01D856;
+}
+
+.button-style {
+	-fx-background-color: #01D856;
+	-fx-border-color: #DFDFDF;
+	-fx-border-radius: 10;
+	-fx-background-radius: 10;
+}
+
+.light-hover:hover {
+    -fx-background-color: #562266; /* Cambia el color de fondo cuando el mouse está encima */
+}
