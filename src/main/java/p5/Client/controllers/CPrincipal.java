@@ -62,18 +62,13 @@ public class CPrincipal {
             chatActual.setSpacing(10); // Espaciado entre los mensajes
             chatActual.setPadding(new Insets(10));
 
-            // Agregar un mensaje de bienvenida si lo deseas
-            Label welcomeMessage = new Label("Bienvenido al chat con " + amigo);
-            chatActual.getChildren().add(welcomeMessage);
-
-            // Guardar el chat en un mapa para poder gestionarlo posteriormente
             chatsAbiertos.put(amigo, chatActual);
 
-            // Mostrar el chat en el contenedor principal
+            // Mostrar el chat
             chat.getChildren().add(chatActual);
             System.out.println("creando chat con " + amigo);
         } else {
-            // Si el chat ya está abierto, solo lo mostramos
+            // Si ya está abierto, mostrar el chat
             System.out.println("recuperando chat con " + amigo);
             VBox chatExistente = chatsAbiertos.get(amigo);
             chat.getChildren().add(chatExistente);
