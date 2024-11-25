@@ -39,6 +39,7 @@ public class CPrincipal {
         }
     }
     public void actualizarAmigos(ArrayList<String> amigos) throws IOException {
+        boxAmigos.getChildren().clear();
         for(String s:amigos){
             FXMLLoader loader = main.crearTemp();
             boxAmigos.getChildren().add(loader.load());
