@@ -15,4 +15,15 @@ public class CTemplateSolicitud {
     public Label getNick() {
         return nick;
     }
+
+    @FXML
+    public void aceptar(){
+        //eliminar del arraylist, llamar a act... ,
+        main.getServer().aceptarSolicitud();
+    }
+
+    public void rechazar(){
+
+        main.getServer().rechazarSolicitud();
+    }
 }

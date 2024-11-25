@@ -14,6 +14,7 @@ public class CSolicitudes {
     private VBox boxSolicitudes;
     private ServerInterface server;
     private Client main;
+    ArrayList<String> nicks;
 
     public void init(ServerInterface server, ArrayList<String> nicks, Client main) throws IOException {
         this.server=server;
@@ -31,8 +32,4 @@ public class CSolicitudes {
         }
     }
 
-    @FXML
-    public void clickAtras() throws IOException {
-        main.abrirPrincipal();
-    }
 }
