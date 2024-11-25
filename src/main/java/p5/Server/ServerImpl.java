@@ -306,6 +306,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    @Override
     public ArrayList<String> buscarSolicitudesUsuario(String name) throws RemoteException, SQLException {
         // Conectar a la base de datos
         conexionBD();

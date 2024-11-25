@@ -11,4 +11,8 @@ public class CTemplateAmigo {
     public void setNick(String nick){
         this.nick.setText(nick);
     }
+
+    public Label getNick() {
+        return nick;
+    }
 }
