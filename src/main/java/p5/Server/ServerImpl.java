@@ -240,7 +240,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     public void aceptarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();
         quitarSolicitud(solicitante,solicitado);
+        conexionBD();
         anhadirAmigos(solicitante,solicitado);
+
     }
 
     @Override
@@ -301,7 +303,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             // Cerrar la conexión
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Conexión cerrada.");
+                System.out.println("Conexion cerrada.");
             }
         }
     }

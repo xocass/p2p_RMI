@@ -8,14 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import p5.Client.Client;
+import p5.Client.ClientInterface;
 import p5.Server.ServerInterface;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class CPrincipal {
     @FXML
@@ -31,6 +32,7 @@ public class CPrincipal {
     private ServerInterface server;
     private Client main;
     private HashMap<String, VBox> chatsAbiertos = new HashMap<>();
+    private String userChatActual;
 
 
     public void init(ServerInterface server, ArrayList<String> amigos,Client main) throws IOException {
@@ -55,6 +57,7 @@ public class CPrincipal {
     @FXML
     private void abrirChat(String amigo) {
         chat.getChildren().clear();
+        userChatActual = amigo;
         // Comprobar si el chat ya está abierto, en caso contrario, crearlo
         if (!chatsAbiertos.containsKey(amigo)) {
             // Crear un VBox vacío para el chat
@@ -81,6 +84,17 @@ public class CPrincipal {
         main.abrirSolicitudes();
     }
 
+    public void enviarMensaje() throws RemoteException {
+        if(msg.getText().isEmpty() || userChatActual == null){
+            return;
+        }
+        else{
+            chatsAbiertos.get(userChatActual).getChildren().add(new Label(msg.getText()));
 
+            ClientInterface remoto = main.getcRemoto().getAmigosConectadosHM().get(userChatActual);
+            remoto.enviarMensaje(msg.getText(), main.getcRemoto().getNombre());
+            msg.setText("");
+        }
+    }
 
 }

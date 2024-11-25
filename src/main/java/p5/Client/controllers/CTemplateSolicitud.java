@@ -1,15 +1,21 @@
 package p5.Client.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
+import p5.Client.Client;
+
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class CTemplateSolicitud {
     @FXML
     private Label nick;
+    private CSolicitudes parent;
 
-    public void setNick(String nick){
+    public void init(String nick, CSolicitudes parent){
         this.nick.setText(nick);
+        this.parent=parent;
     }
 
     public Label getNick() {
@@ -17,13 +23,15 @@ public class CTemplateSolicitud {
     }
 
     @FXML
-    public void aceptar(){
-        //eliminar del arraylist, llamar a act... ,
-        main.getServer().aceptarSolicitud();
+    public void aceptar() throws SQLException, IOException {
+        parent.getServer().aceptarSolicitud(nick.getText(),parent.getMain().getcRemoto().getNombre());
+        parent.getNicks().remove(nick.getText());
+        parent.actualizarListaSolicitudes();
     }
-
-    public void rechazar(){
-
-        main.getServer().rechazarSolicitud();
+    @FXML
+    public void rechazar() throws SQLException, IOException {
+        parent.getServer().rechazarSolicitud(nick.getText(),parent.getMain().getcRemoto().getNombre());
+        parent.getNicks().remove(nick.getText());
+        parent.actualizarListaSolicitudes();
     }
 }

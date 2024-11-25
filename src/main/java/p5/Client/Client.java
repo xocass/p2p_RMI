@@ -52,6 +52,10 @@ public class Client extends Application{
         return server;
     }
 
+    public ClientImpl getcRemoto() {
+        return cRemoto;
+    }
+
     private void registroRMI(){
         try {
             String registryURL = "rmi://localhost/server";

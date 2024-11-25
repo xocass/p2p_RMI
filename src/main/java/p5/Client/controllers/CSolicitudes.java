@@ -19,17 +19,35 @@ public class CSolicitudes {
     public void init(ServerInterface server, ArrayList<String> nicks, Client main) throws IOException {
         this.server=server;
         this.main=main;
-        actualizarListaSolicitudes(nicks);
+        this.nicks=nicks;
+        actualizarListaSolicitudes();
     }
 
-    private void actualizarListaSolicitudes(ArrayList<String> nicks) throws IOException {
+    public ServerInterface getServer() {
+        return server;
+    }
+
+    public ArrayList<String> getNicks() {
+        return nicks;
+    }
+
+    public Client getMain() {
+        return main;
+    }
+
+    public void actualizarListaSolicitudes() throws IOException {
         boxSolicitudes.getChildren().clear();
         for(String nick:nicks){
             FXMLLoader loader = main.crearTemp("solicitudes");
             boxSolicitudes.getChildren().add(loader.load());
             CTemplateSolicitud controller = loader.getController();
-            controller.setNick(nick);
+            controller.init(nick,this);
         }
+    }
+
+    @FXML
+    public void clickAtras() throws IOException {
+        main.abrirPrincipal();
     }
 
 }

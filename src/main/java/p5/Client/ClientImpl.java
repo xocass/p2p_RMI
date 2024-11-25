@@ -18,6 +18,10 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
         this.main = main;
     }
 
+    public HashMap<String, ClientInterface> getAmigosConectadosHM() {
+        return amigosConectados;
+    }
+
     public ArrayList<String> getNombresAmigos(){
         return new ArrayList<>(amigosConectados.keySet());
     }
@@ -28,7 +32,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
 
     @Override
     public void enviarMensaje(String mensaje,String name) throws RemoteException {
-        System.out.println(mensaje);
+        System.out.println(name +": "+mensaje);
     }
 
     @Override
