@@ -18,11 +18,10 @@ public class CSolicitudes {
     public void init(ServerInterface server, ArrayList<String> nicks, Client main) throws IOException {
         this.server=server;
         this.main=main;
-        this.nicks=nicks;
-        actualizarListaSolicitudes();
+        actualizarListaSolicitudes(nicks);
     }
 
-    private void actualizarListaSolicitudes() throws IOException {
+    private void actualizarListaSolicitudes(ArrayList<String> nicks) throws IOException {
         boxSolicitudes.getChildren().clear();
         for(String nick:nicks){
             FXMLLoader loader = main.crearTemp("solicitudes");
