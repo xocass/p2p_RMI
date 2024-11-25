@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import p5.Client.Client;
@@ -34,12 +35,7 @@ public class CPrincipal {
     public void init(ServerInterface server, ArrayList<String> amigos,Client main) throws IOException {
         this.server=server;
         this.main=main;
-        for(String s:amigos){
-            FXMLLoader loader = main.crearTemp();
-            boxAmigos.getChildren().add(loader.load());
-            CTemplateAmigo controller = loader.getController();
-            controller.setNick(s);
-        }
+        actualizarAmigos(amigos);
     }
     public void actualizarAmigos(ArrayList<String> amigos) throws IOException {
         boxAmigos.getChildren().clear();
@@ -55,7 +51,9 @@ public class CPrincipal {
         }
     }
 
+    @FXML
     private void abrirChat(String amigo) {
+        chat.getChildren().clear();
         // Comprobar si el chat ya está abierto, en caso contrario, crearlo
         if (!chatsAbiertos.containsKey(amigo)) {
             // Crear un VBox vacío para el chat
@@ -63,17 +61,22 @@ public class CPrincipal {
             chatActual.setSpacing(10); // Espaciado entre los mensajes
             chatActual.setPadding(new Insets(10));
 
+            // Agregar un mensaje de bienvenida si lo deseas
+            Label welcomeMessage = new Label("Bienvenido al chat con " + amigo);
+            chatActual.getChildren().add(welcomeMessage);
+
             // Guardar el chat en un mapa para poder gestionarlo posteriormente
             chatsAbiertos.put(amigo, chatActual);
 
             // Mostrar el chat en el contenedor principal
             chat.getChildren().add(chatActual);
+            System.out.println("creando chat con " + amigo);
         } else {
             // Si el chat ya está abierto, solo lo mostramos
+            System.out.println("recuperando chat con " + amigo);
             VBox chatExistente = chatsAbiertos.get(amigo);
-            if (!chat.getChildren().contains(chatExistente)) {
-                chat.getChildren().add(chatExistente);
-            }
+            chat.getChildren().add(chatExistente);
+
         }
     }
 

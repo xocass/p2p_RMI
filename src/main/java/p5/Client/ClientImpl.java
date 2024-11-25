@@ -36,14 +36,12 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
         if(conectado){
             if (!amigosConectados.containsKey(amigo)) {
                 amigosConectados.put(amigo, objeto);
-                //main.actualizarVista -> acutaliza lista de chats
                 System.out.println("Amigo conectado: " + amigo);
             } else {
                 System.out.println("No se pudo obtener la referencia del amigo: " + amigo);
             }
         }else{
             amigosConectados.remove(amigo, objeto);
-            //main.actualizarVista -> acutaliza lista de chats
             System.out.println("Amigo desconectado: " + amigo);
         }
         main.actualizarListaAmigos(getNombresAmigos());
