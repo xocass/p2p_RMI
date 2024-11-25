@@ -18,6 +18,11 @@ public class CSolicitudes {
     public void init(ServerInterface server, ArrayList<String> nicks, Client main) throws IOException {
         this.server=server;
         this.main=main;
+        this.nicks=nicks;
+        actualizarListaSolicitudes();
+    }
+
+    private void actualizarListaSolicitudes() throws IOException {
         boxSolicitudes.getChildren().clear();
         for(String nick:nicks){
             FXMLLoader loader = main.crearTemp("solicitudes");
@@ -26,6 +31,7 @@ public class CSolicitudes {
             controller.setNick(nick);
         }
     }
+
     @FXML
     public void clickAtras() throws IOException {
         main.abrirPrincipal();

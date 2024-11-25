@@ -48,8 +48,9 @@ public class Client extends Application{
         controller.init(server,this);
     }
 
-
-
+    public ServerInterface getServer() {
+        return server;
+    }
 
     private void registroRMI(){
         try {
