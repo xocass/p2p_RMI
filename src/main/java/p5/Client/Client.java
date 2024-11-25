@@ -90,7 +90,7 @@ public class Client extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         cPrincipal = fxmlLoader.getController();
-        cPrincipal.init(server,this);
+        //cPrincipal.init(server,this,);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -104,6 +104,6 @@ public class Client extends Application{
     }
 
     public void nuevoMensaje(String mensaje, String name){
-        cPrincipal.nuevoMensaje(mensaje,name);
+        //cPrincipal.nuevoMensaje(mensaje,name);
     }
 }
