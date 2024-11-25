@@ -5,20 +5,22 @@ import p5.Client.controllers.*;
 import p5.Server.*;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.util.ArrayList;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class Client extends Application{
     Stage stage;
     ServerInterface server;
+    private CPrincipal cPrincipal;
+
     public static void main(String args[]) {
         launch();
     }
@@ -48,7 +50,7 @@ public class Client extends Application{
 
     private void registroRMI(){
         try {
-            String registryURL = "rmi://172.20.10.2:1099/server";
+            String registryURL = "rmi://localhost/server";
             System.out.println(registryURL);
             // find the remote object and cast it to an interface object
             server = (ServerInterface) Naming.lookup(registryURL);
@@ -60,14 +62,48 @@ public class Client extends Application{
             System.out.println("Exception in Client: " + e);
         }
     }
+
+
+
     public void abrirRegistrar() throws IOException {
         stage.setTitle("registrate");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VRegistrarse.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),385,216);
         cRegistrarse controller = fxmlLoader.getController();
-        controller.setServer(server);
+        controller.init(server,this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+    public void abrirInicioSesion() throws IOException {
+        stage.setTitle("inicio sesion");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 681.4, 400);
+        CInicioSesion controller = fxmlLoader.getController();
+        controller.init(server,this);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public void abrirPrincipal() throws IOException {
+        stage.setTitle("");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
+        cPrincipal = fxmlLoader.getController();
+        cPrincipal.init(server,this);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void crearCliente(String nick,HashMap<String,ClientInterface> amigosCon) throws RemoteException, SQLException {
+        ClientImpl cRemoto = new ClientImpl(nick,amigosCon,this);
+        server.registrarCliente(nick, cRemoto);
+        server.notificarConexion(nick);
+        System.out.println("Cliente registrado en el servidor central.");
+    }
+
+    public void nuevoMensaje(String mensaje, String name){
+        cPrincipal.nuevoMensaje(mensaje,name);
     }
 }

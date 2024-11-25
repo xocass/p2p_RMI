@@ -5,10 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import p5.Client.Client;
 import p5.Server.ServerInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class CPrincipal {
     @FXML
@@ -22,9 +26,12 @@ public class CPrincipal {
     @FXML
     private Button enviar;
     private ServerInterface server;
+    private Client main;
 
     @FXML
     public void init(ArrayList<String> amigos) throws IOException {
+        this.server=server;
+        this.main=main;
         for(String s:amigos){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("p5.client.VTemplateAmigo.fxml"));
             boxAmigos.getChildren().add(loader.load());
@@ -32,5 +39,8 @@ public class CPrincipal {
             controller.setNick(s);
         }
     }
+
+
+
 
 }

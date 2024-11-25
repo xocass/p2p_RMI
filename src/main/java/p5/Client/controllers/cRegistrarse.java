@@ -2,15 +2,11 @@ package p5.Client.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import p5.Client.Client;
 import p5.Server.ServerInterface;
 
 import java.rmi.RemoteException;
@@ -26,8 +22,10 @@ public class cRegistrarse {
     private Button registrar;
     @FXML
     private Label nodisponible;
+    private Client main;
 
-    public void setServer(ServerInterface server){
+    public void init(ServerInterface server, Client client){
+        this.main = client;
         this.server=server;
     }
 
@@ -37,20 +35,7 @@ public class cRegistrarse {
         System.out.println(val);
         if (val==1){
             try {
-                // Cargar la nueva ventana
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
-                Parent root = loader.load();
-
-                // Crear un nuevo Stage
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Inicio Sesión");
-                stage.show();
-
-                // Cerrar la ventana actual
-                Node source = (Node) event.getSource();
-                Stage currentStage = (Stage) source.getScene().getWindow();
-                currentStage.close();
+                main.abrirInicioSesion();
             } catch (Exception e) {
                 e.printStackTrace();
             }

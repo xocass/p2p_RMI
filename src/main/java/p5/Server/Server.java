@@ -21,9 +21,7 @@ public class Server{
             int RMIPortNum = Integer.parseInt(portNum);
             startRegistry(RMIPortNum);
             ServerImpl exportedObj = new ServerImpl();
-            String host = obtenerIPPrivada();
-            System.out.println(host);
-            registryURL = "rmi://192.168.56.1:1099/server";
+            registryURL = "rmi://localhost/server";
             Naming.rebind(registryURL, exportedObj);
             /**/     System.out.println
 /**/        ("Server registered.  Registry currently contains:");
@@ -66,15 +64,5 @@ public class Server{
             System.out.println(names[i]);
     } //end listRegistry
 
-    public static String obtenerIPPrivada() {
-        try {
-            // Obtener la dirección IP local
-            InetAddress inetAddress = InetAddress.getLocalHost();
-            return inetAddress.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            return "No se pudo obtener la IP privada";
-        }
-    }
 
 }

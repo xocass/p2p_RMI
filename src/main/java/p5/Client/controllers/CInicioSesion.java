@@ -8,11 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import p5.Client.Client;
+import p5.Client.ClientImpl;
+import p5.Client.ClientInterface;
 import p5.Server.ServerInterface;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 
 public class CInicioSesion {
     @FXML
@@ -33,8 +37,16 @@ public class CInicioSesion {
         main.abrirRegistrar();
     }
     @FXML
-    public void clickLogin() throws SQLException, RemoteException {
-        server.iniciarSesion(nickField.getText(),pswField.getText());
+    public void clickLogin() throws SQLException, IOException {
+        String nick = nickField.getText();
+        HashMap<String,ClientInterface> amigosCon = server.iniciarSesion(nickField.getText(),pswField.getText());
+        if(amigosCon == null){
+            noExiste.setVisible(true);
+        }else{
+            System.out.println(amigosCon);
+            main.crearCliente(nick,amigosCon);
+            main.abrirPrincipal();
+        }
     }
 
     public void init(ServerInterface server, Client main){
