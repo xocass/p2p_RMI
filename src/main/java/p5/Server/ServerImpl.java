@@ -215,7 +215,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
     @Override
-    public void anhadirSolicitud(String solicitante, String solicitado) throws SQLException {
+    public void anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();
         String insertQuery = "INSERT INTO solicitudes (solicitante, solicitado) VALUES (?, ?)";
 
@@ -236,14 +236,14 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
     @Override
-    public void aceptarSolicitud(String solicitante, String solicitado) throws SQLException {
+    public void aceptarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();
         quitarSolicitud(solicitante,solicitado);
         anhadirAmigos(solicitante,solicitado);
     }
 
     @Override
-    public void rechazarSolicitud(String solicitante, String solicitado) throws SQLException {
+    public void rechazarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();
         quitarSolicitud(solicitante,solicitado);
     }

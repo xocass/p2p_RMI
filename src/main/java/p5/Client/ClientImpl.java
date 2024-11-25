@@ -17,7 +17,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
         this.main = main;
     }
 
-    public List<String> getNombresAmigos(){
+    public ArrayList<String> getNombresAmigos(){
         return new ArrayList<>(amigosConectados.keySet());
     }
 
