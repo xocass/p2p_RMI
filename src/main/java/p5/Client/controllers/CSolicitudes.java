@@ -26,4 +26,8 @@ public class CSolicitudes {
             controller.setNick(nick);
         }
     }
+    @FXML
+    public void clickAtras() throws IOException {
+        main.abrirPrincipal();
+    }
 }

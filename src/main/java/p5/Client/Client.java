@@ -136,7 +136,7 @@ public class Client extends Application{
     public void abrirSolicitudes() throws IOException, SQLException {
         stage.setTitle("solicitudes");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VSolicitudes.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 300, 270);
+        Scene scene = new Scene(fxmlLoader.load(), 300, 300);
         CSolicitudes cSolicitudes = fxmlLoader.getController();
         cSolicitudes.init(server,(ArrayList<String>)server.buscarSolicitudesUsuario(cRemoto.getNombre()),this);
         stage.setScene(scene);
