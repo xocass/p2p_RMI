@@ -14,10 +14,16 @@ public class CSolicitudes {
     private VBox boxSolicitudes;
     private ServerInterface server;
     private Client main;
+    ArrayList<String> nicks;
 
     public void init(ServerInterface server, ArrayList<String> nicks, Client main) throws IOException {
         this.server=server;
         this.main=main;
+        this.nicks=nicks;
+        actualizarListaSolicitudes();
+    }
+
+    private void actualizarListaSolicitudes() throws IOException {
         boxSolicitudes.getChildren().clear();
         for(String nick:nicks){
             FXMLLoader loader = main.crearTemp("solicitudes");
@@ -25,5 +31,16 @@ public class CSolicitudes {
             CTemplateSolicitud controller = loader.getController();
             controller.setNick(nick);
         }
+    }
+
+    @FXML
+    public void aceptar(){
+        //eliminar del arraylist, llamar a act... ,
+        main.getServer().aceptarSolicitud();
+    }
+
+    public void rechazar(){
+
+        main.getServer().rechazarSolicitud();
     }
 }
