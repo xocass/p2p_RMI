@@ -10,6 +10,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -91,7 +92,7 @@ public class Client extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         cPrincipal = fxmlLoader.getController();
-        cPrincipal.init(server,this,cRemoto.getNombresAmigos());
+        cPrincipal.init(server,this,(ArrayList<String>)cRemoto.getNombresAmigos());
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
