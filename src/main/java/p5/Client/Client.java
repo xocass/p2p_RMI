@@ -87,12 +87,16 @@ public class Client extends Application{
         stage.setResizable(false);
         stage.show();
     }
+
+    public FXMLLoader crearTemp(){
+        return new FXMLLoader(getClass().getResource("VTemplateAmigo.fxml"));
+    }
     public void abrirPrincipal() throws IOException {
         stage.setTitle("");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         cPrincipal = fxmlLoader.getController();
-        cPrincipal.init(server,this,(ArrayList<String>)cRemoto.getNombresAmigos());
+        cPrincipal.init(server,this,(ArrayList<String>)cRemoto.getNombresAmigos(),this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

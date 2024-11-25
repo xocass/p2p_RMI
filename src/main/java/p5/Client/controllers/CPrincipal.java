@@ -29,11 +29,11 @@ public class CPrincipal {
     private Client main;
 
     @FXML
-    public void init(ServerInterface server, Client client, ArrayList<String> amigos) throws IOException {
+    public void init(ServerInterface server, Client client, ArrayList<String> amigos,Client main) throws IOException {
         this.server=server;
         this.main=main;
         for(String s:amigos){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("p5.client.VTemplateAmigo.fxml"));
+            FXMLLoader loader = main.crearTemp();
             boxAmigos.getChildren().add(loader.load());
             CTemplateAmigo controller = loader.getController();
             controller.setNick(s);
