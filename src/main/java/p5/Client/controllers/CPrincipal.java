@@ -29,6 +29,10 @@ public class CPrincipal {
     private TextField msg;
     @FXML
     private Button enviar;
+    @FXML
+    private Button anhadirAmigo;
+    @FXML
+    private Label tituloChat;
     private ServerInterface server;
     private Client main;
     private HashMap<String, VBox> chatsAbiertos = new HashMap<>();
@@ -58,6 +62,7 @@ public class CPrincipal {
     private void abrirChat(String amigo) {
         chat.getChildren().clear();
         userChatActual = amigo;
+        tituloChat.setText("Chat con " + userChatActual);
         // Comprobar si el chat ya está abierto, en caso contrario, crearlo
         if (!chatsAbiertos.containsKey(amigo)) {
             // Crear un VBox vacío para el chat
@@ -96,5 +101,8 @@ public class CPrincipal {
             msg.setText("");
         }
     }
-
+    @FXML
+    public void nuevoAmigo() throws SQLException, IOException {
+        main.abrirNuevoAmigo();
+    }
 }

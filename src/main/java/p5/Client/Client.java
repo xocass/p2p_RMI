@@ -148,5 +148,15 @@ public class Client extends Application{
         stage.setResizable(false);
         stage.show();
     }
+    public void abrirNuevoAmigo() throws IOException, SQLException {
+        stage.setTitle("añadir nuevos amigos");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VAnhadir.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 365, 221);
+        CAnhadir controller = fxmlLoader.getController();
+        controller.init(this,cRemoto.getNombre());
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
 
 }

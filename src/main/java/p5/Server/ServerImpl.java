@@ -215,18 +215,21 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             return null;
         }
     }
-    @Override
-    public void anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
-        conexionBD();
-        String insertQuery = "INSERT INTO solicitudes (solicitante, solicitado) VALUES (?, ?)";
+    private boolean existeUsuario(String nick) throws RemoteException, SQLException {
+        conexionBD(); // Establecer conexión a la base de datos
 
-        try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
-            // Configurar los parámetros de la consulta
-            stmt.setString(1, solicitante);
-            stmt.setString(2, solicitado);
+        String query = "SELECT 1 FROM usuario WHERE nick = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            // Configurar el parámetro de la consulta
+            stmt.setString(1, nick);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next(); // Devuelve true si hay al menos un resultado
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Error al añadir amigos: " + e.getMessage());
+            System.err.println("Error al comprobar si el usuario existe: " + e.getMessage());
             throw e; // Propagar la excepción si ocurre un error
         } finally {
             // Cerrar la conexión
@@ -236,6 +239,75 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             }
         }
     }
+
+    public boolean existenAmigos(String usuario1, String usuario2) throws RemoteException, SQLException {
+        conexionBD(); // Establecer conexión a la base de datos
+
+        String query = "SELECT 1 FROM amigos WHERE usuario1 = ? AND usuario2 = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            // Configurar el parámetro de la consulta
+            stmt.setString(1, usuario1);
+            stmt.setString(2, usuario2);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next(); // Devuelve true si hay al menos un resultado
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+            throw e;
+        } finally {
+            // Cerrar la conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            }
+        }
+    }
+
+
+    @Override
+    public int anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
+        if(!existeUsuario(solicitado)){
+            //usuario no existe
+            return 2;
+        }
+        if(existenAmigos(solicitado,solicitante)){
+            return 3;
+        }
+        conexionBD();
+        String insertQuery = "INSERT INTO solicitudes (solicitante, solicitado) VALUES (?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, solicitante);
+            stmt.setString(2, solicitado);
+
+            // Ejecutar la consulta
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Solicitud añadida correctamente.");
+                //solicitud enviada
+                return 1;
+            } else {
+                System.out.println("No se pudo añadir la solicitud (0 filas afectadas).");
+                return 0; // Error
+            }
+        } catch (SQLException e) {
+            // Manejo de errores
+            e.printStackTrace();
+            System.err.println("Error al añadir solicitud: " + e.getMessage());
+            return 0;
+        } finally {
+            // Cerrar la conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexión cerrada.");
+            }
+        }
+    }
+
     @Override
     public void aceptarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();

@@ -17,7 +17,7 @@ public interface ServerInterface extends Remote{
 
     void registrarCliente(String nombre, ClientInterface referencia) throws RemoteException;
     ClientInterface obtenerCliente(String nombre) throws RemoteException;
-    public void anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
+    public int anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
     public void aceptarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
     public void rechazarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
     public ArrayList<String> buscarSolicitudesUsuario(String name) throws RemoteException, SQLException;
