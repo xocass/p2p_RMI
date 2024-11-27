@@ -3,8 +3,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxWidth="420.0" minWidth="20.0" style="-fx-border-radius: 30; -fx-background-radius: 30; -fx-border-color: #DFDFDF; -fx-background-color: #01D856;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CTemplateMensaje">
+<AnchorPane maxWidth="420.0" minWidth="20.0" style="-fx-border-radius: 30; -fx-background-radius: 30; -fx-border-color: #DFDFDF; -fx-background-color: #804180;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CTemplateMensaje" fx:id="fondomsg">
    <children>
-      <Label fx:id="mensaje" layoutX="6.0" layoutY="1.0" maxWidth="415.0" text="Label" wrapText="true" />
+      <Label fx:id="mensaje" layoutX="6.0" layoutY="1.0" maxWidth="415.0" text="Label" textFill="WHITE" wrapText="true" />
    </children>
 </AnchorPane>

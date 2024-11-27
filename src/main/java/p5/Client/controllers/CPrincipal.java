@@ -153,6 +153,7 @@ public class CPrincipal {
         FXMLLoader loader = main.crearTemp("mensajes");
         hbox.getChildren().add(loader.load());
         CTemplateMensaje controller = loader.getController();
+        controller.setColorRec();
         controller.init(mensaje);
 
         // Añadir el HBox al chat
