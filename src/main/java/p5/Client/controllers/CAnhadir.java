@@ -34,6 +34,10 @@ public class CAnhadir {
         if(field.getText().isEmpty()){
             return;
         }
+        if(field.getText().equals(nick)){
+            solicitudEnviada.setText("No puedes enviarte una solicitud a ti mismo");
+            return;
+        }
         int val = main.getServer().anhadirSolicitud(nick,field.getText());
         if(val==1){
             solicitudEnviada.setText("La solicitud fue enviada correctamente");
@@ -48,7 +52,7 @@ public class CAnhadir {
         }
     }
 
-    public void atras() throws IOException {
+    public void atras() throws IOException, SQLException {
         main.abrirPrincipal();
     }
 

@@ -51,8 +51,9 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
         main.actualizarListaAmigos(getNombresAmigos());
     }
 
-
-    //onAction boton de enviar -> main.nuevoMensaje(str,nombre);
+    public void nuevaSolicitudRecibida(String solicitante) throws IOException {
+        //main.
+    }
 
 }
 

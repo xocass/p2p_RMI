@@ -37,13 +37,18 @@ public class CPrincipal {
     private Label tituloChat;
     private ServerInterface server;
     private Client main;
-    private HashMap<String, VBox> chatsAbiertos = new HashMap<>();
+    private static int numSolis = 0;
+    private static ArrayList<String> solicitudesPendientes = new ArrayList<>();
+    private static final HashMap<String, VBox> chatsAbiertos = new HashMap<>();
     private String userChatActual;
 
 
-    public void init(ServerInterface server, ArrayList<String> amigos,Client main) throws IOException {
+    public void init(ServerInterface server, ArrayList<String> amigos,Client main) throws IOException, SQLException {
         this.server=server;
         this.main=main;
+        solicitudesPendientes = main.getServer().buscarSolicitudesUsuario(main.getcRemoto().getNombre());
+        numSolis = solicitudesPendientes.size();
+        solicitudes.setText("Solicitudes (" + numSolis + ")");
         actualizarAmigos(amigos);
     }
     public void actualizarAmigos(ArrayList<String> amigos) throws IOException {
@@ -136,5 +141,13 @@ public class CPrincipal {
     @FXML
     public void nuevoAmigo() throws SQLException, IOException {
         main.abrirNuevoAmigo();
+    }
+
+    public void nuevaSolicitudRecibida(String solicitante) throws IOException {
+        solicitudesPendientes.add(solicitante);
+        numSolis++;
+        Platform.runLater(() -> {
+            solicitudes.setText("Solicitudes (" + numSolis + ")");
+        });
     }
 }

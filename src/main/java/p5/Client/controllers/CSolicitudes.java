@@ -7,6 +7,7 @@ import p5.Client.Client;
 import p5.Server.ServerInterface;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CSolicitudes {
@@ -46,7 +47,7 @@ public class CSolicitudes {
     }
 
     @FXML
-    public void clickAtras() throws IOException {
+    public void clickAtras() throws IOException, SQLException {
         main.abrirPrincipal();
     }
 

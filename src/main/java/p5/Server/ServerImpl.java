@@ -272,12 +272,14 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
     private boolean existeSolicitud(String solicitante, String solicitado) throws SQLException {
         // Consulta SQL para comprobar si existe una solicitud entre dos usuarios
-        String query = "SELECT 1 FROM solicitudes WHERE solicitante = ? AND solicitado = ?";
+        String query = "SELECT 1 FROM solicitudes WHERE solicitante = ? AND solicitado = ? OR solicitante = ? AND solicitado = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             // Configurar los parámetros de la consulta
             stmt.setString(1, solicitante);
             stmt.setString(2, solicitado);
+            stmt.setString(3, solicitado);
+            stmt.setString(4, solicitante);
 
             // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
@@ -415,7 +417,6 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         // Lista para almacenar los nombres de los solicitantes
         ArrayList<String> solicitantes = new ArrayList<>();
 
-        // Consulta SQL para obtener los solicitantes donde "solicitado" es "name"
         String query = "SELECT solicitante FROM solicitudes WHERE solicitado = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
