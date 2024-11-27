@@ -113,12 +113,12 @@ public class Client extends Application{
         return null;
     }
 
-    public void abrirPrincipal() throws IOException {
+    public void abrirPrincipal() throws IOException, SQLException {
         stage.setTitle(cRemoto.getNombre());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         cPrincipal = fxmlLoader.getController();
-        cPrincipal.init(server,(ArrayList<String>)cRemoto.getNombresAmigos(),this);
+        cPrincipal.init(server,cRemoto.getNombresAmigos(),this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -149,7 +149,7 @@ public class Client extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VSolicitudes.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 300, 300);
         CSolicitudes cSolicitudes = fxmlLoader.getController();
-        cSolicitudes.init(server,(ArrayList<String>)server.buscarSolicitudesUsuario(cRemoto.getNombre()),this);
+        cSolicitudes.init(server,server.buscarSolicitudesUsuario(cRemoto.getNombre()),this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -163,6 +163,17 @@ public class Client extends Application{
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+    }
+
+    public void nuevaSolicitudRecibida(String solicitante) throws IOException {
+        if(stage.getTitle().equals("solicitudes")){
+            CSolicitudes cSolicitudes = (CSolicitudes) stage.getScene().getUserData();
+            cSolicitudes.getNicks().add(solicitante);
+            cSolicitudes.actualizarListaSolicitudes();
+        }
+        if(stage.getTitle().equals(cRemoto.getNombre())){
+            cPrincipal.nuevaSolicitudRecibida(solicitante);
+        }
     }
 
 }
