@@ -4,21 +4,23 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import org.w3c.dom.Text;
 import p5.Client.Client;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 public class CAnhadir {
     @FXML
-    private Label atras;
+    private ImageView atras;
     @FXML
     private Label solicitudEnviada;
     @FXML
     private TextField field;
     @FXML
-    private Button enviar;
+    private ImageView enviar;
     private Client main;
     private String nick;
 
@@ -41,6 +43,13 @@ public class CAnhadir {
         else if(val==3){
             solicitudEnviada.setText("El usuario " + field.getText() + " ya es tu amigo");
         }
+        else if(val==4){
+            solicitudEnviada.setText("Ya has enviado una solicitud a " + field.getText());
+        }
+    }
+
+    public void atras() throws IOException {
+        main.abrirPrincipal();
     }
 
 }

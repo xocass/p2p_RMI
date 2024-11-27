@@ -31,8 +31,8 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     }
 
     @Override
-    public void enviarMensaje(String mensaje,String name) throws RemoteException {
-        System.out.println(name +": "+mensaje);
+    public void enviarMensaje(String mensaje,String name) throws IOException {
+        main.getcPrincipal().recibirMensaje(mensaje,name);
     }
 
     @Override

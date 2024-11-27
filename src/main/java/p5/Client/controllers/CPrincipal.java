@@ -1,11 +1,13 @@
 package p5.Client.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import p5.Client.Client;
 import p5.Client.ClientInterface;
@@ -89,18 +91,48 @@ public class CPrincipal {
         main.abrirSolicitudes();
     }
 
-    public void enviarMensaje() throws RemoteException {
-        if(msg.getText().isEmpty() || userChatActual == null){
-            return;
-        }
-        else{
-            chatsAbiertos.get(userChatActual).getChildren().add(new Label(msg.getText()));
+    @FXML
+    public void enviarMensaje() throws IOException {
+        if (msg.getText().isEmpty() || userChatActual == null) {
+        return;
+    } else {
+        // Crear un HBox para contener el mensaje y alinearlo a la derecha
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.CENTER_RIGHT); // Alinear el contenido a la derecha
 
-            ClientInterface remoto = main.getcRemoto().getAmigosConectadosHM().get(userChatActual);
-            remoto.enviarMensaje(msg.getText(), main.getcRemoto().getNombre());
-            msg.setText("");
-        }
+        // Cargar el template del mensaje
+        FXMLLoader loader = main.crearTemp("mensajes");
+        hbox.getChildren().add(loader.load());
+        CTemplateMensaje controller = loader.getController();
+        controller.init(msg.getText());
+
+        // Añadir el HBox al chat
+        chatsAbiertos.get(userChatActual).getChildren().add(hbox);
+
+        // Enviar el mensaje al cliente remoto
+        ClientInterface remoto = main.getcRemoto().getAmigosConectadosHM().get(userChatActual);
+        remoto.enviarMensaje(msg.getText(), main.getcRemoto().getNombre());
+        msg.setText("");
     }
+    }
+
+    public void recibirMensaje(String mensaje, String remitente) throws IOException {
+        // Crear un HBox para contener el mensaje y alinearlo a la izquierda
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.CENTER_LEFT);
+
+        // Cargar el template del mensaje
+        FXMLLoader loader = main.crearTemp("mensajes");
+        hbox.getChildren().add(loader.load());
+        CTemplateMensaje controller = loader.getController();
+        controller.init(mensaje);
+
+        // Añadir el HBox al chat
+        Platform.runLater(() -> {
+            chatsAbiertos.get(remitente).getChildren().add(hbox);
+        });
+    }
+
     @FXML
     public void nuevoAmigo() throws SQLException, IOException {
         main.abrirNuevoAmigo();

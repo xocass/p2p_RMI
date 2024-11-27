@@ -27,6 +27,8 @@ public class CTemplateSolicitud {
         parent.getServer().aceptarSolicitud(nick.getText(),parent.getMain().getcRemoto().getNombre());
         parent.getNicks().remove(nick.getText());
         parent.actualizarListaSolicitudes();
+        parent.getMain().getServer().notificarConexion(nick.getText());
+        parent.getMain().getServer().notificarConexion(parent.getMain().getcRemoto().getNombre());
     }
     @FXML
     public void rechazar() throws SQLException, IOException {

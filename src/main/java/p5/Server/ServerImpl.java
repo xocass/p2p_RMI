@@ -231,17 +231,10 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             e.printStackTrace();
             System.err.println("Error al comprobar si el usuario existe: " + e.getMessage());
             throw e; // Propagar la excepción si ocurre un error
-        } finally {
-            // Cerrar la conexión
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Conexión cerrada.");
-            }
         }
     }
 
-    public boolean existenAmigos(String usuario1, String usuario2) throws RemoteException, SQLException {
-        conexionBD(); // Establecer conexión a la base de datos
+    private boolean existenAmigos(String usuario1, String usuario2) throws RemoteException, SQLException {
 
         String query = "SELECT 1 FROM amigos WHERE usuario1 = ? AND usuario2 = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -257,18 +250,33 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             e.printStackTrace();
             System.err.println(e.getMessage());
             throw e;
-        } finally {
-            // Cerrar la conexión
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Conexión cerrada.");
+        }
+    }
+
+    private boolean existeSolicitud(String solicitante, String solicitado) throws SQLException {
+        // Consulta SQL para comprobar si existe una solicitud entre dos usuarios
+        String query = "SELECT 1 FROM solicitudes WHERE solicitante = ? AND solicitado = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, solicitante);
+            stmt.setString(2, solicitado);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al comprobar si existe la solicitud: " + e.getMessage());
+            throw e;
         }
     }
 
 
     @Override
     public int anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
+        conexionBD();
         if(!existeUsuario(solicitado)){
             //usuario no existe
             return 2;
@@ -276,7 +284,10 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         if(existenAmigos(solicitado,solicitante)){
             return 3;
         }
-        conexionBD();
+        //añade una comprobacion que sea si ya existe la solicitud
+        if (existeSolicitud(solicitante, solicitado)) {
+            return 4;
+        }
         String insertQuery = "INSERT INTO solicitudes (solicitante, solicitado) VALUES (?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {

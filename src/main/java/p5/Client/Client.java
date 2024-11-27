@@ -56,6 +56,10 @@ public class Client extends Application{
         return cRemoto;
     }
 
+    public CPrincipal getcPrincipal() {
+        return cPrincipal;
+    }
+
     private void registroRMI(){
         try {
             String registryURL = "rmi://localhost/server";
@@ -100,6 +104,8 @@ public class Client extends Application{
                 return new FXMLLoader(getClass().getResource("VTemplateAmigo.fxml"));
             case "solicitudes":
                 return new FXMLLoader(getClass().getResource("VTemplateSolicitud.fxml"));
+            case "mensajes":
+                return new FXMLLoader(getClass().getResource("VTemplateMensaje.fxml"));
             default:
                 System.out.println("MAL PASADO EL ARGUMENTO A CREARTEMP");
                 break;
