@@ -21,4 +21,5 @@ public interface ServerInterface extends Remote{
     public void aceptarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
     public void rechazarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
     public ArrayList<String> buscarSolicitudesUsuario(String name) throws RemoteException, SQLException;
+    public void notificarUsuario(String user, String notificado) throws RemoteException;
 }

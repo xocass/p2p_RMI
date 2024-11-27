@@ -1,11 +1,11 @@
 package p5.Server;
 
-import p5.Client.Client;
 import p5.Client.ClientInterface;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.KeyException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,6 +160,23 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
                 }
             }
         }
+    }
+
+    @Override
+    public void notificarUsuario(String user, String notificado) throws RemoteException{
+        ClientInterface objUser = conectados.get(user);
+        try {
+            ClientInterface objNotificado = conectados.get(notificado);
+            if(objNotificado==null){
+                System.out.println(notificado + " esta desconectado");
+                return;
+            }
+            objUser.actualizarListaAmigosConectados(notificado,objNotificado,true);
+            objNotificado.actualizarListaAmigosConectados(user,objUser,true);
+        } catch (IOException e) {
+            System.err.println("Error notificando la aceptación de solicitud a " + user + " por " + notificado);
+        }
+
     }
 
 
@@ -325,7 +342,6 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         quitarSolicitud(solicitante,solicitado);
         conexionBD();
         anhadirAmigos(solicitante,solicitado);
-
     }
 
     @Override
