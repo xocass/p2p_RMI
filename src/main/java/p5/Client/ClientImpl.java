@@ -48,11 +48,11 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
             amigosConectados.remove(amigo, objeto);
             System.out.println("Amigo desconectado: " + amigo);
         }
-        main.actualizarListaAmigos(getNombresAmigos());
+        main.actualizarListaAmigos(amigo,conectado);
     }
-
+    @Override
     public void nuevaSolicitudRecibida(String solicitante) throws IOException {
-        //main.
+        main.nuevaSolicitudRecibida(solicitante);
     }
 
 }

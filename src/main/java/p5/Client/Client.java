@@ -6,14 +6,10 @@ import p5.Client.controllers.*;
 import p5.Server.*;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -135,10 +131,10 @@ public class Client extends Application{
         //cPrincipal.nuevoMensaje(mensaje,name);
     }
 
-    public void actualizarListaAmigos(ArrayList<String> amigos) throws IOException {
+    public void actualizarListaAmigos(String amigo,boolean conectado) throws IOException {
         Platform.runLater(() -> {
             try {
-                cPrincipal.actualizarAmigos(amigos);
+                cPrincipal.actualizarListaAmigos(amigo,conectado);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -166,13 +162,21 @@ public class Client extends Application{
     }
 
     public void nuevaSolicitudRecibida(String solicitante) throws IOException {
-        if(stage.getTitle().equals("solicitudes")){
+        if (stage.getTitle().equals("solicitudes")) {
             CSolicitudes cSolicitudes = (CSolicitudes) stage.getScene().getUserData();
-            cSolicitudes.getNicks().add(solicitante);
-            cSolicitudes.actualizarListaSolicitudes();
+            if (cSolicitudes != null) {
+                cSolicitudes.getNicks().add(solicitante);
+                cSolicitudes.actualizarListaSolicitudes();
+            } else {
+                System.err.println("UserData for 'solicitudes' is null.");
+            }
         }
-        if(stage.getTitle().equals(cRemoto.getNombre())){
-            cPrincipal.nuevaSolicitudRecibida(solicitante);
+        if (stage.getTitle().equals(cRemoto.getNombre())) {
+            if (cPrincipal != null) {
+                cPrincipal.nuevaSolicitudRecibida(solicitante);
+            } else {
+                System.err.println("cPrincipal is null.");
+            }
         }
     }
 

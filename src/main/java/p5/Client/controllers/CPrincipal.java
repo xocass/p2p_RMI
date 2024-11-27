@@ -14,7 +14,6 @@ import p5.Client.ClientInterface;
 import p5.Server.ServerInterface;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -49,11 +48,41 @@ public class CPrincipal {
         solicitudesPendientes = main.getServer().buscarSolicitudesUsuario(main.getcRemoto().getNombre());
         numSolis = solicitudesPendientes.size();
         solicitudes.setText("Solicitudes (" + numSolis + ")");
-        actualizarAmigos(amigos);
+        crearListaAmigos(amigos);
     }
-    public void actualizarAmigos(ArrayList<String> amigos) throws IOException {
+    public void crearListaAmigos(ArrayList<String> amigos) throws IOException {
         boxAmigos.getChildren().clear();
         for(String s:amigos){
+            // Crear un VBox vacío para el chat
+            VBox chatActual = new VBox();
+            chatActual.setSpacing(10); // Espaciado entre los mensajes
+            chatActual.setPadding(new Insets(10));
+
+            chatsAbiertos.put(s, chatActual);
+            FXMLLoader loader = main.crearTemp("amigos");
+            boxAmigos.getChildren().add(loader.load());
+            CTemplateAmigo controller = loader.getController();
+            controller.setNick(s);
+            // Obtener el botón del template y asignar la acción al pulsar
+            controller.getNick().setOnMouseClicked(event -> {
+                abrirChat(s);
+            });
+        }
+    }
+
+    public void actualizarListaAmigos(String nombre, boolean conectado) throws IOException {
+        if(conectado){
+            VBox chatActual = new VBox();
+            chatActual.setSpacing(10); // Espaciado entre los mensajes
+            chatActual.setPadding(new Insets(10));
+
+            chatsAbiertos.put(nombre, chatActual);
+        }else{
+            chatsAbiertos.remove(nombre);
+
+        }
+        boxAmigos.getChildren().clear();
+        for(String s: chatsAbiertos.keySet()){
             FXMLLoader loader = main.crearTemp("amigos");
             boxAmigos.getChildren().add(loader.load());
             CTemplateAmigo controller = loader.getController();
@@ -72,13 +101,7 @@ public class CPrincipal {
         tituloChat.setText("Chat con " + userChatActual);
         // Comprobar si el chat ya está abierto, en caso contrario, crearlo
         if (!chatsAbiertos.containsKey(amigo)) {
-            // Crear un VBox vacío para el chat
-            VBox chatActual = new VBox();
-            chatActual.setSpacing(10); // Espaciado entre los mensajes
-            chatActual.setPadding(new Insets(10));
-
-            chatsAbiertos.put(amigo, chatActual);
-
+            VBox chatActual = chatsAbiertos.get(amigo);
             // Mostrar el chat
             chat.getChildren().add(chatActual);
             System.out.println("creando chat con " + amigo);

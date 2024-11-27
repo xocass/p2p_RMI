@@ -7,5 +7,6 @@ import java.rmi.RemoteException;
 public interface ClientInterface extends Remote {
     void enviarMensaje(String mensaje,String name) throws IOException;
     void actualizarListaAmigosConectados(String amigo,ClientInterface objeto,boolean conectado) throws IOException;
+    public void nuevaSolicitudRecibida(String solicitante) throws IOException;
 }
 
