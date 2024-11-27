@@ -163,7 +163,13 @@ public class Client extends Application{
         if (stage.getTitle().equals("solicitudes")) {
             if (cSolicitudes != null) {
                 cSolicitudes.getNicks().add(solicitante);
-                cSolicitudes.actualizarListaSolicitudes();
+                Platform.runLater(() -> {
+                    try {
+                        cSolicitudes.actualizarListaSolicitudes();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             } else {
                 System.err.println("UserData for 'solicitudes' is null.");
             }
