@@ -15,6 +15,6 @@ public class CTemplateMensaje {
     }
 
     public void setColorRec(){
-        fondomsg.setStyle("-fx-border-radius: 30; -fx-background-radius: 30; -fx-border-color: #DFDFDF; -fx-background-color: #4c1e5a;");
+        fondomsg.setStyle("-fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: #DFDFDF; -fx-background-color: #4c1e5a;");
     }
 }
