@@ -8,16 +8,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CPrincipal">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CPrincipal">
    <children>
       <VBox fx:id="boxAmigos" layoutY="103.0" prefHeight="298.0" prefWidth="146.0">
          <padding>
             <Insets left="5.0" right="5.0" top="10.0" />
          </padding>
       </VBox>
-      <ScrollPane hbarPolicy="NEVER" layoutX="146.0" layoutY="33.0" prefHeight="315.0" prefWidth="454.0">
+      <ScrollPane hbarPolicy="NEVER" layoutX="146.0" layoutY="33.0" maxWidth="454.0" prefHeight="315.0" prefWidth="454.0">
          <content>
-            <VBox fx:id="chat" prefHeight="345.0" prefWidth="452.0" />
+            <VBox fx:id="chat" maxWidth="452.0" minHeight="312.0" minWidth="452.0" prefWidth="452.0" />
          </content>
       </ScrollPane>
       <TextField fx:id="msg" layoutX="156.0" layoutY="361.0" prefHeight="26.0" prefWidth="369.0" />
