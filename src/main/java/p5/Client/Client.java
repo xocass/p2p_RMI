@@ -155,7 +155,8 @@ public class Client extends Application{
         stage.show();
     }
 
-    public void nuevaSolicitudRecibida(String solicitante) throws IOException {
+    public void nuevaSolicitudRecibida(String solicitante) {
+        cPrincipal.setSolImage(new Image(getClass().getResource("notificacion.png").toExternalForm()));
         if (stage.getTitle().equals("solicitudes")) {
             if (cSolicitudes != null) {
                 cSolicitudes.getNicks().add(solicitante);
@@ -178,5 +179,4 @@ public class Client extends Application{
             }
         }
     }
-
 }
