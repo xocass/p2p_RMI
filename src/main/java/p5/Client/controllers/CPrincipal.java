@@ -58,13 +58,15 @@ public class CPrincipal {
     public void crearListaAmigos(ArrayList<String> amigos) throws IOException {
         boxAmigos.getChildren().clear();
         for(String s:amigos){
-            // Crear un VBox vacío para el chat
-            VBox chatActual = new VBox();
-            chatActual.setSpacing(10); // Espaciado entre los mensajes
-            chatActual.setPadding(new Insets(10));
+            if(!chatsAbiertos.containsKey(s)){
+                // Crear un VBox vacío para el chat
+                VBox chatActual = new VBox();
+                chatActual.setSpacing(10); // Espaciado entre los mensajes
+                chatActual.setPadding(new Insets(10));
 
-            chatsAbiertos.put(s, chatActual);
-            configurarDragAndDrop(chatActual);
+                chatsAbiertos.put(s, chatActual);
+                configurarDragAndDrop(chatActual);
+            }
 
             FXMLLoader loader = main.crearTemp("amigos");
             boxAmigos.getChildren().add(loader.load());
