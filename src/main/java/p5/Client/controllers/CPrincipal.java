@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import p5.Client.Client;
@@ -23,15 +24,15 @@ public class CPrincipal {
     @FXML
     private VBox boxAmigos;
     @FXML
-    private Button solicitudes;
+    private ImageView solicitudes;
     @FXML
     private VBox chat;
     @FXML
     private TextField msg;
     @FXML
-    private Button enviar;
+    private ImageView enviar;
     @FXML
-    private Button anhadirAmigo;
+    private ImageView anhadirAmigo;
     @FXML
     private Label tituloChat;
     private ServerInterface server;
@@ -46,8 +47,8 @@ public class CPrincipal {
         this.server=server;
         this.main=main;
         solicitudesPendientes = main.getServer().buscarSolicitudesUsuario(main.getcRemoto().getNombre());
-        numSolis = solicitudesPendientes.size();
-        solicitudes.setText("Solicitudes (" + numSolis + ")");
+        //numSolis = solicitudesPendientes.size();
+        //solicitudes.setText("Solicitudes (" + numSolis + ")");
         crearListaAmigos(amigos);
     }
     public void crearListaAmigos(ArrayList<String> amigos) throws IOException {
@@ -98,7 +99,7 @@ public class CPrincipal {
     private void abrirChat(String amigo) {
         chat.getChildren().clear();
         userChatActual = amigo;
-        tituloChat.setText("Chat con " + userChatActual);
+        tituloChat.setText(userChatActual);
         // Comprobar si el chat ya está abierto, en caso contrario, crearlo
         if (!chatsAbiertos.containsKey(amigo)) {
             VBox chatActual = chatsAbiertos.get(amigo);
@@ -171,7 +172,7 @@ public class CPrincipal {
         solicitudesPendientes.add(solicitante);
         numSolis++;
         Platform.runLater(() -> {
-            solicitudes.setText("Solicitudes (" + numSolis + ")");
+            //solicitudes.setText("Solicitudes (" + numSolis + ")");
         });
     }
 }

@@ -18,23 +18,45 @@
 .light-hover:hover {
     -fx-background-color: #804180; /* Cambia el color de fondo cuando el mouse está encima */
 }
+.friends-hover {
+	-fx-background-color: #000000;
+}
+.friends-hover:hover {
+	-fx-background-color: #333333; /* Cambia el color de fondo cuando el mouse está encima */
+}
 
+.chat-style{
+	-fx-background-color: #BBBBBB;
+}
+.principal-style{
+	-fx-background-color: #1A0028;
+	-fx-border-color: #1A0028;
+}
+.button-style {
+	-fx-background-color: #2A0F38;
+	-fx-text-fill: white;
+	-fx-background-radius: 10px;
+	-fx-border-radius: 10px;
+	-fx-padding: 8px 16px;
+	-fx-border-color: transparent;
+	-fx-border-width: 0;
+}
+.escribir-style {
+	-fx-background-color:  #2A0F38; /* Lila claro */
+	-fx-text-fill: #000000; /* Texto blanco */
+	-fx-background-radius: 10px; /* Esquinas rectas (sin redondeo) */
+	-fx-border-radius: 10px; /* Asegura que el borde también sea recto */
+	-fx-padding: 6px 12px; /* Ajuste de tamaño interno del botón */
+	-fx-border-color: transparent; /* Sin borde visible */
+	-fx-border-width: 0;
+}
 /* The main scrollbar **track** CSS class  */
 .mylistview .scroll-bar:horizontal .track,
 .mylistview .scroll-bar:vertical .track{
-	-fx-background-color:transparent;
+	-fx-background-color:#1A0028;
 	-fx-border-color:transparent;
 	-fx-background-radius: 0em;
 	-fx-border-radius:2em;
-}
-
-/* The increment and decrement button CSS class of scrollbar */
-.mylistview .scroll-bar:horizontal .increment-button ,
-.mylistview .scroll-bar:horizontal .decrement-button {
-    -fx-background-color:transparent;
-	-fx-background-radius: 0em;
-	-fx-padding:0 0 10 0;
-
 }
 
 /* The increment and decrement button CSS class of scrollbar */
@@ -42,21 +64,20 @@
 .mylistview .scroll-bar:vertical .increment-button ,
 .mylistview .scroll-bar:vertical .decrement-button {
 
-    -fx-background-color:transparent;
+    -fx-background-color: #1A0028;
 	-fx-background-radius: 0em;
 	-fx-padding:0 10 0 0;
 
 }
 
-.mylistview  .scroll-bar .increment-arrow,
-.mylistview  .scroll-bar .decrement-arrow {
+.mylistview .scroll-bar .increment-arrow,
+.mylistview .scroll-bar .decrement-arrow {
 	-fx-shape: " ";	
 	-fx-padding:0;
 }
 
 /* The main scrollbar **thumb** CSS class which we drag every time (movable) */
-.mylistview .scroll-bar:horizontal .thumb,
-.mylistview .scroll-bar:vertical .thumb {
+.mylistview 	.scroll-bar:vertical .thumb {
     -fx-background-color:derive(black,90%);
 	-fx-background-insets: 2, 0, 0;
 	-fx-background-radius: 2em;
