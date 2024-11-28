@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="322.0" prefWidth="606.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CInicioSesion">
+<AnchorPane prefHeight="322.0" prefWidth="606.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CInicioSesion">
    <children>
       <Label layoutX="69.0" layoutY="59.0" prefHeight="80.0" prefWidth="307.0" text="INICIAR SESIÓN" textFill="WHITE">
          <font>
@@ -30,7 +30,7 @@
             <Font name="System Italic" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="login" layoutX="253.0" layoutY="319.0" mnemonicParsing="false" onAction="#clickLogin" text="Login" />
+      <Button fx:id="login" layoutX="251.0" layoutY="338.0" mnemonicParsing="false" onAction="#clickLogin" text="Login" />
       <AnchorPane layoutX="439.0" prefHeight="400.0" prefWidth="242.0" style="-fx-background-color: #31113e;">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="176.0">
@@ -52,9 +52,14 @@
             </VBox>
          </children>
       </AnchorPane>
-      <Label fx:id="noExiste" layoutX="69.0" layoutY="314.0" prefHeight="36.0" prefWidth="142.0" text="Datos incorrectos" textFill="RED" visible="false">
+      <Label fx:id="noExiste" layoutX="69.0" layoutY="337.0" prefHeight="27.0" prefWidth="142.0" text="Datos incorrectos" textFill="RED" visible="false">
          <font>
             <Font name="System Italic" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="cambiarPasswd" layoutX="69.0" layoutY="293.0" onMouseClicked="#cambiarPasswd" prefHeight="18.0" prefWidth="118.0" text="Modificar contraseña" textFill="#faf8f8" underline="true">
+         <font>
+            <Font name="System Italic" size="12.0" />
          </font>
       </Label>
    </children>

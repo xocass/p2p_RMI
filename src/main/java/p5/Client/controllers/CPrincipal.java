@@ -7,14 +7,17 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import p5.Client.Client;
 import p5.Client.ClientInterface;
 import p5.Server.ServerInterface;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -60,6 +63,8 @@ public class CPrincipal {
             chatActual.setPadding(new Insets(10));
 
             chatsAbiertos.put(s, chatActual);
+            configurarDragAndDrop(chatActual);
+
             FXMLLoader loader = main.crearTemp("amigos");
             boxAmigos.getChildren().add(loader.load());
             CTemplateAmigo controller = loader.getController();
@@ -78,6 +83,7 @@ public class CPrincipal {
             chatActual.setPadding(new Insets(10));
 
             chatsAbiertos.put(nombre, chatActual);
+            configurarDragAndDrop(chatActual);
         }else{
             chatsAbiertos.remove(nombre);
 
@@ -163,16 +169,87 @@ public class CPrincipal {
         });
     }
 
+    public void enviarImagen(File archivo) {
+        ClientInterface receptor = main.getcRemoto().getAmigosConectadosHM().get(userChatActual);
+        try (FileInputStream fis = new FileInputStream(archivo);
+             ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+            }
+            byte[] imagenBytes = bos.toByteArray();
+            receptor.recibirImagen(imagenBytes, archivo.getName(),main.getcRemoto().getNombre());
+            //crea un hbox y añade la imagen al chat
+            HBox hbox = new HBox();
+            hbox.setAlignment(Pos.CENTER_RIGHT);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imagenBytes);
+            Image image = new Image(bis);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            hbox.getChildren().add(imageView);
+
+            Platform.runLater(() -> {
+                chatsAbiertos.get(userChatActual).getChildren().add(hbox);
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void recibirImagen(byte[] imagen, String nombreArchivo,String remitente) throws IOException {
+        // Crear un HBox para contener la imagen y alinearlo a la izquierda
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.CENTER_LEFT);
+
+        //quiero hacer un imageView para meter en el hbox
+        ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
+        Image image = new Image(bis);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+        hbox.getChildren().add(imageView);
+
+        // Añadir el HBox al chat
+        Platform.runLater(() -> {
+            chatsAbiertos.get(remitente).getChildren().add(hbox);
+        });
+    }
+
+
+
     @FXML
     public void nuevoAmigo() throws SQLException, IOException {
         main.abrirNuevoAmigo();
     }
 
-    public void nuevaSolicitudRecibida(String solicitante) throws IOException {
+    public void nuevaSolicitudRecibida(String solicitante) {
         solicitudesPendientes.add(solicitante);
         numSolis++;
         Platform.runLater(() -> {
             //solicitudes.setText("Solicitudes (" + numSolis + ")");
+        });
+    }
+
+    private void configurarDragAndDrop(VBox target) {
+        target.setOnDragOver(event -> {
+            if (event.getGestureSource() != target && event.getDragboard().hasFiles()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        });
+
+        target.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                File archivo = db.getFiles().get(0); // Solo tomamos el primer archivo
+                enviarImagen(archivo);
+            }
+            event.setDropCompleted(true);
+            event.consume();
         });
     }
 }

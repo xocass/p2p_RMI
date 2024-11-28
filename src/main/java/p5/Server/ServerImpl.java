@@ -80,6 +80,36 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    public int actualizarContrasenha(String nick, String newPasswd) throws SQLException, RemoteException {
+        //haz que se actualice la contraseña en la base de datos
+        conexionBD();
+        String hashedPasswd = hashPassword(newPasswd);
+        if (hashedPasswd == null) {
+            System.err.println("Error al hashear la contraseña.");
+            return 0;
+        }
+        String updateQuery = "UPDATE usuario SET passwd = ? WHERE nick = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
+            // Configurar los parámetros de la consulta
+            stmt.setString(1, hashedPasswd);
+            stmt.setString(2, nick);
+
+            // Ejecutar la consulta
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0 ? 1 : 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error al actualizar la contraseña: " + e.getMessage());
+            return 0;
+        } finally {
+            // Cerrar la conexión
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Conexion cerrada.");
+            }
+        }
+    }
+
     @Override
     public HashMap<String,ClientInterface> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
         conexionBD(); // Establecer conexión a la base de datos

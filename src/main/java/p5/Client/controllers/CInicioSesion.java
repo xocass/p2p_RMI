@@ -34,7 +34,11 @@ public class CInicioSesion {
     private ServerInterface server;
     @FXML
     public void abrirRegistrar() throws IOException {
-        main.abrirRegistrar();
+        main.abrirRegistrar(1);
+    }
+    @FXML
+    public void cambiarPasswd() throws IOException {
+        main.abrirRegistrar(0);
     }
     @FXML
     public void clickLogin() throws SQLException, IOException {
