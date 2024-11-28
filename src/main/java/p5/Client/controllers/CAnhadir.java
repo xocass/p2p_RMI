@@ -44,7 +44,10 @@ public class CAnhadir {
             solicitudEnviada.setText("La solicitud fue enviada correctamente");
             //haz que llame al controlador de la ventana principal y actualice la lista de solicitudes de la persona a la que se le envió la solicitud
             ClientInterface amigo = main.getServer().obtenerCliente(field.getText());
-            amigo.nuevaSolicitudRecibida(nick);
+            if(amigo!=null){
+                amigo.nuevaSolicitudRecibida(nick);
+            }
+
         }else if(val==2){
             solicitudEnviada.setText("El nombre de usuario no existe");
         }

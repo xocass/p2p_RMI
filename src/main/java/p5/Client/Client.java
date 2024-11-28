@@ -18,6 +18,7 @@ public class Client extends Application{
     private Stage stage;
     private ServerInterface server;
     private CPrincipal cPrincipal;
+    private CSolicitudes cSolicitudes;
     private ClientImpl cRemoto;
 
     public static void main(String args[]) {
@@ -127,10 +128,6 @@ public class Client extends Application{
         System.out.println("Cliente registrado en el servidor central.");
     }
 
-    public void nuevoMensaje(String mensaje, String name){
-        //cPrincipal.nuevoMensaje(mensaje,name);
-    }
-
     public void actualizarListaAmigos(String amigo,boolean conectado) throws IOException {
         Platform.runLater(() -> {
             try {
@@ -146,6 +143,7 @@ public class Client extends Application{
         Scene scene = new Scene(fxmlLoader.load(), 300, 300);
         CSolicitudes cSolicitudes = fxmlLoader.getController();
         cSolicitudes.init(server,server.buscarSolicitudesUsuario(cRemoto.getNombre()),this);
+        this.cSolicitudes=cSolicitudes;
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -163,10 +161,15 @@ public class Client extends Application{
 
     public void nuevaSolicitudRecibida(String solicitante) throws IOException {
         if (stage.getTitle().equals("solicitudes")) {
-            CSolicitudes cSolicitudes = (CSolicitudes) stage.getScene().getUserData();
             if (cSolicitudes != null) {
                 cSolicitudes.getNicks().add(solicitante);
-                cSolicitudes.actualizarListaSolicitudes();
+                Platform.runLater(() -> {
+                    try {
+                        cSolicitudes.actualizarListaSolicitudes();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             } else {
                 System.err.println("UserData for 'solicitudes' is null.");
             }
