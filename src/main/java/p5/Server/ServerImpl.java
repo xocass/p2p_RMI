@@ -193,6 +193,25 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     }
 
     @Override
+    public void notificarDesconexion(String name) throws RemoteException, SQLException {
+        // Obtener la lista de amigos conectados del cliente que se desconecta
+        List<String> amigos = obtenerAmigos(name);
+        ClientInterface objDesconexion = conectados.get(name);
+        for (String amigo : amigos) {
+            if (conectados.containsKey(amigo)) {
+                ClientInterface amigoConectado = conectados.get(amigo);
+                // Notificar al amigo conectado que este cliente se ha desconectado
+                try {
+                    amigoConectado.actualizarListaAmigosConectados(name,objDesconexion,false);
+                } catch (IOException e) {
+                    System.err.println("Error notificando a " + amigo + ": " + e.getMessage());
+                }
+            }
+        }
+        conectados.remove(name);
+    }
+
+    @Override
     public void notificarUsuario(String user, String notificado) throws RemoteException{
         ClientInterface objUser = conectados.get(user);
         try {

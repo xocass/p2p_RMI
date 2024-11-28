@@ -15,7 +15,7 @@ public interface ServerInterface extends Remote{
 
     public HashMap<String,ClientInterface> iniciarSesion (String name, String passwd) throws RemoteException, SQLException;
     public void notificarConexion(String name) throws RemoteException, SQLException;
-
+    public void notificarDesconexion(String name) throws RemoteException, SQLException;
     void registrarCliente(String nombre, ClientInterface referencia) throws RemoteException;
     ClientInterface obtenerCliente(String nombre) throws RemoteException;
     public int anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
