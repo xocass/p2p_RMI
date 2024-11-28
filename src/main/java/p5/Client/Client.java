@@ -127,7 +127,7 @@ public class Client extends Application{
     public void abrirPrincipal() throws IOException, SQLException {
         stage.setTitle(cRemoto.getNombre());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 663, 418);
         cPrincipal = fxmlLoader.getController();
         scene.setOnKeyPressed(event -> {
             if(event.getCode() == ENTER){
