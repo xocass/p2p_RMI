@@ -26,7 +26,8 @@
 }
 
 .chat-style{
-	-fx-background-color: #BBBBBB;
+	-fx-background-color: #FFFFFF;
+	/*-fx-background-color:#3A1F48 ;*/
 }
 .principal-style{
 	-fx-background-color: #1A0028;

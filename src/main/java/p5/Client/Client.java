@@ -31,10 +31,21 @@ public class Client extends Application{
         stage=primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
         primaryStage.setTitle("iniciar sesion");
-        primaryStage.setScene(new Scene(loader.load(), 681.4, 400));
+        Scene iniciar = new Scene(loader.load(), 681.4, 400);
+        CInicioSesion controller = loader.getController();
+        /*iniciar.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case ENTER:
+                    // Llamar a la función deseada
+                    controller.clickLogin();
+                    break;
+                default:
+                    break;
+            }
+        });*/
+        primaryStage.setScene(iniciar);
         primaryStage.setResizable(false);
         primaryStage.show();
-        CInicioSesion controller = loader.getController();
         registroRMI();
         controller.init(server,this);
     }
