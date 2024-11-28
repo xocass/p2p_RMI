@@ -12,14 +12,12 @@ public class CTemplateMensaje {
     @FXML
     private Label time;
 
-    public void init(String mensaje){
+    public void init(String mensaje,String hora){
         this.mensaje.setText(mensaje);
+        time.setText(hora);
     }
 
     public void setColorRec(){
         fondomsg.setStyle("-fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: #DFDFDF; -fx-background-color: #4c1e5a;");
-    }
-    public void setTime(String hora){
-        time.setText(hora);
     }
 }
