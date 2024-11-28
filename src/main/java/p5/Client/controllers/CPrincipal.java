@@ -124,7 +124,8 @@ public class CPrincipal {
             System.out.println("recuperando chat con " + amigo);
             VBox chatExistente = chatsAbiertos.get(amigo);
             scrollPaneChats.setContent(chatExistente);
-
+            scrollPaneChats.layout();
+            scrollPaneChats.setVvalue(1.0);
         }
     }
 
