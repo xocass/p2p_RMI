@@ -51,7 +51,7 @@ public class CPrincipal {
         this.main=main;
         solicitudesPendientes = main.getServer().buscarSolicitudesUsuario(main.getcRemoto().getNombre());
         numSolis = solicitudesPendientes.size();
-        //if(numSolis>0) solicitudes.setImage(new Image(main.getImageNoti()));
+        if(numSolis>0) solicitudes.setImage(main.getImageNoti());
         //solicitudes.setText("Solicitudes (" + numSolis + ")");
         crearListaAmigos(amigos);
     }

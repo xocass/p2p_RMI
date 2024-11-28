@@ -104,7 +104,7 @@ public class Client extends Application{
         return null;
     }
     public Image getImageNoti(){
-        return new Image("notificacion.png");
+        return new Image(getClass().getResource("notificacion.png").toExternalForm());
     }
     public void abrirPrincipal() throws IOException, SQLException {
         stage.setTitle(cRemoto.getNombre());

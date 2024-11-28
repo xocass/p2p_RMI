@@ -14,7 +14,11 @@
    <children>
       <ScrollPane hbarPolicy="NEVER" layoutX="146.0" layoutY="47.0" maxWidth="454.0" prefHeight="301.0" prefWidth="454.0" styleClass="mylistview">
          <content>
-            <VBox fx:id="chat" maxWidth="452.0" minHeight="302.0" minWidth="452.0" prefHeight="315.0" prefWidth="452.0" styleClass="chat-style" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <VBox fx:id="chat" maxWidth="452.0" minHeight="294.0" minWidth="452.0" prefHeight="302.0" prefWidth="452.0" styleClass="chat-style" />
+               </children>
+            </AnchorPane>
          </content>
       </ScrollPane>
       <TextField fx:id="msg" layoutX="158.0" layoutY="359.0" prefHeight="26.0" prefWidth="394.0" promptText="Escriba el texto aquí...." styleClass="escribir-style" />
