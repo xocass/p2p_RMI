@@ -224,7 +224,7 @@ public class CPrincipal {
         ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
         Image image = new Image(bis);
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(100);
+        imageView.setFitHeight(130);
         imageView.setPreserveRatio(true);
         hbox.getChildren().add(imageView);
 
