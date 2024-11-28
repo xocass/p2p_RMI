@@ -259,4 +259,7 @@ public class CPrincipal {
             event.consume();
         });
     }
+    public void setSolImage(Image image){
+        solicitudes.setImage(image);
+    }
 }

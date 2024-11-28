@@ -38,11 +38,11 @@ public class CSolicitudes {
 
     public void actualizarListaSolicitudes() throws IOException {
         boxSolicitudes.getChildren().clear();
-        for(String nick:nicks){
+        for (String nick : nicks) {
             FXMLLoader loader = main.crearTemp("solicitudes");
             boxSolicitudes.getChildren().add(loader.load());
             CTemplateSolicitud controller = loader.getController();
-            controller.init(nick,this);
+            controller.init(nick, this);
         }
     }
 
