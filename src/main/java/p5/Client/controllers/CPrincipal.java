@@ -20,6 +20,8 @@ import p5.Server.ServerInterface;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -147,7 +149,7 @@ public class CPrincipal {
         FXMLLoader loader = main.crearTemp("mensajes");
         hbox.getChildren().add(loader.load());
         CTemplateMensaje controller = loader.getController();
-        controller.init(msg.getText());
+        controller.init(msg.getText(),getTiempoFormateado());
 
         // Añadir el HBox al chat
         chatsAbiertos.get(userChatActual).getChildren().add(hbox);
@@ -174,7 +176,7 @@ public class CPrincipal {
         hbox.getChildren().add(loader.load());
         CTemplateMensaje controller = loader.getController();
         controller.setColorRec();
-        controller.init(mensaje);
+        controller.init(mensaje,getTiempoFormateado());
 
         // Añadir el HBox al chat
         Platform.runLater(() -> {
@@ -269,5 +271,14 @@ public class CPrincipal {
     }
     public void setSolImage(Image image){
         solicitudes.setImage(image);
+    }
+
+    private String getTiempoFormateado(){
+        // Obtener la hora actual
+        LocalTime now = LocalTime.now();
+
+        // Definir el formato de la hora
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return now.format(formatter);
     }
 }
