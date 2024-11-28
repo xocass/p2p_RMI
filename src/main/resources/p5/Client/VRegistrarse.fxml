@@ -4,10 +4,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="216.0" prefWidth="385.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.cRegistrarse">
+<AnchorPane prefHeight="326.0" prefWidth="385.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CRegistrarse">
     <TextField fx:id="nick" layoutX="25.0" layoutY="59.0" prefHeight="26.0" prefWidth="256.0" />
     <Label layoutX="25.0" layoutY="29.0" prefHeight="0.0" prefWidth="82.0" text="Nick" textFill="WHITE">
         <font>
@@ -20,10 +22,21 @@
             <Font name="System Italic" size="14.0" />
         </font>
     </Label>
-    <Button fx:id="registrar" layoutX="317.0" layoutY="176.0" mnemonicParsing="false" onAction="#clickRegistrar" text="Signup" />
-   <Label fx:id="nodisponible" layoutX="25.0" layoutY="180.0" prefHeight="18.0" prefWidth="167.0" text="Ese nick no está disponible" textFill="RED" visible="false">
+    <Button fx:id="registrar" layoutX="317.0" layoutY="286.0" mnemonicParsing="false" onAction="#clickRegistrar" text="Signup" />
+   <Label fx:id="nodisponible" layoutX="27.0" layoutY="250.0" prefHeight="26.0" prefWidth="256.0" text="Ese nick no está disponible" textFill="RED" visible="false">
       <font>
-         <Font name="System Italic" size="12.0" />
+         <Font name="System Italic" size="13.0" />
       </font>
    </Label>
+   <PasswordField fx:id="passwd2" layoutX="25.0" layoutY="210.0" prefHeight="26.0" prefWidth="256.0" />
+   <Label layoutX="25.0" layoutY="180.0" prefHeight="20.0" prefWidth="139.0" text="Confirmar contraseña" textFill="WHITE">
+      <font>
+         <Font name="System Italic" size="14.0" />
+      </font>
+   </Label>
+   <ImageView fx:id="atras" fitHeight="44.0" fitWidth="64.0" layoutX="5.0" layoutY="277.0" onMouseClicked="#atras" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@atras.png" />
+      </image>
+   </ImageView>
 </AnchorPane>
