@@ -41,6 +41,7 @@ public class CAnhadir {
         }
         int val = main.getServer().anhadirSolicitud(nick,field.getText());
         if(val==1){
+            solicitudEnviada.setStyle("-fx-text-fill: white;");
             solicitudEnviada.setText("La solicitud fue enviada correctamente");
             //haz que llame al controlador de la ventana principal y actualice la lista de solicitudes de la persona a la que se le envió la solicitud
             ClientInterface amigo = main.getServer().obtenerCliente(field.getText());
@@ -49,12 +50,15 @@ public class CAnhadir {
             }
 
         }else if(val==2){
+            solicitudEnviada.setStyle("-fx-text-fill: red;");
             solicitudEnviada.setText("El nombre de usuario no existe");
         }
         else if(val==3){
+            solicitudEnviada.setStyle("-fx-text-fill: red;");
             solicitudEnviada.setText("El usuario " + field.getText() + " ya es tu amigo");
         }
         else if(val==4){
+            solicitudEnviada.setStyle("-fx-text-fill: red;");
             solicitudEnviada.setText("Ya has enviado una solicitud a " + field.getText());
         }
     }

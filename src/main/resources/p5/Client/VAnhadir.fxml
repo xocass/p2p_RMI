@@ -6,12 +6,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="221.0" prefWidth="365.0" style="-fx-background-color: #552264;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CAnhadir">
+<AnchorPane prefHeight="162.0" prefWidth="365.0" style="-fx-background-color: #1A0028;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CAnhadir">
    <children>
       <Label alignment="CENTER" layoutX="90.0" layoutY="14.0" prefHeight="44.0" prefWidth="184.0" text="Escribe el nombre de usuario" textFill="WHITE" />
       <TextField fx:id="field" layoutX="27.0" layoutY="58.0" prefHeight="26.0" prefWidth="278.0" />
-      <Label fx:id="solicitudEnviada" alignment="CENTER" layoutX="47.0" layoutY="110.0" prefHeight="18.0" prefWidth="270.0" textFill="WHITE" />
-      <ImageView fx:id="atras" fitHeight="44.0" fitWidth="47.0" layoutX="14.0" layoutY="163.0" onMouseClicked="#atras" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="solicitudEnviada" alignment="CENTER" layoutX="31.0" layoutY="96.0" prefHeight="18.0" prefWidth="270.0" textFill="WHITE" />
+      <ImageView fx:id="atras" fitHeight="44.0" fitWidth="47.0" layoutX="9.0" layoutY="105.0" onMouseClicked="#atras" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@atras.png" />
          </image>

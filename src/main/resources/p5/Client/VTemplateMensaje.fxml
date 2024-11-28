@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="fondomsg" maxWidth="350.0" minWidth="20.0" style="-fx-border-radius: 15; -fx-background-radius: 15; -fx-border-color: #DFDFDF; -fx-background-color: #804180;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CTemplateMensaje">
    <children>
@@ -10,6 +11,11 @@
          <padding>
             <Insets left="10.0" right="10.0" />
          </padding></Label>
+      <Label fx:id="time" layoutX="49.0" layoutY="13.0" text="11:12" textFill="#897b7b">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
    </children>
    <opaqueInsets>
       <Insets />
