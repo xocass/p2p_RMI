@@ -10,23 +10,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="principal-style" stylesheets="@estilos.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CPrincipal">
+<AnchorPane prefHeight="418.0" prefWidth="663.0" styleClass="principal-style" stylesheets="@estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CPrincipal">
    <children>
-      <ScrollPane fx:id="scrollPaneChats" hbarPolicy="NEVER" layoutX="146.0" layoutY="47.0" maxWidth="454.0" prefHeight="301.0" prefWidth="454.0" styleClass="mylistview">
+      <ScrollPane fx:id="scrollPaneChats" hbarPolicy="NEVER" layoutX="185.0" layoutY="53.0" prefHeight="301.0" prefWidth="454.0" styleClass="mylistview">
          <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <VBox fx:id="chat" maxWidth="452.0" minHeight="294.0" minWidth="452.0" prefHeight="302.0" prefWidth="452.0" styleClass="chat-style" />
-               </children>
-            </AnchorPane>
+            <VBox fx:id="chat" maxWidth="452.0" minHeight="302.0" minWidth="452.0" prefHeight="302.0" prefWidth="452.0" styleClass="chat-style" />
          </content>
       </ScrollPane>
-      <TextField fx:id="msg" layoutX="158.0" layoutY="359.0" prefHeight="26.0" prefWidth="394.0" promptText="Escriba el texto aquí...." styleClass="escribir-style" />
-      <Label alignment="CENTER" layoutX="7.0" layoutY="62.0" prefHeight="34.0" prefWidth="132.0" text="AMIGOS CONECTADOS" textAlignment="CENTER" textFill="WHITE">
+      <TextField fx:id="msg" layoutX="186.0" layoutY="371.0" prefHeight="30.0" prefWidth="417.0" promptText="Escriba el texto aquí...." styleClass="escribir-style" />
+      <Label alignment="CENTER" layoutX="21.0" layoutY="62.0" prefHeight="34.0" prefWidth="132.0" text="AMIGOS CONECTADOS" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <ScrollPane hbarPolicy="NEVER" layoutY="98.0" prefHeight="302.0" prefWidth="146.0" styleClass="mylistview">
+      <ScrollPane hbarPolicy="NEVER" layoutX="14.0" layoutY="97.0" prefHeight="302.0" prefWidth="146.0" styleClass="mylistview">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="302.0" prefWidth="144.0" styleClass="principal-style">
                <children>
@@ -39,21 +35,21 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <ImageView fx:id="enviar" fitHeight="25.0" fitWidth="25.0" layoutX="561.0" layoutY="362.0" onMouseClicked="#enviarMensaje" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="enviar" fitHeight="25.0" fitWidth="25.0" layoutX="614.0" layoutY="374.0" onMouseClicked="#enviarMensaje" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@send.png" />
          </image>
       </ImageView>
-      <Label fx:id="tituloChat" layoutX="146.0" layoutY="12.0" prefHeight="25.0" prefWidth="222.0" textFill="WHITE">
+      <Label fx:id="tituloChat" layoutX="168.0" layoutY="14.0" prefHeight="25.0" prefWidth="222.0" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
-      <ImageView fx:id="anhadirAmigo" fitHeight="34.0" fitWidth="33.0" layoutX="28.0" layoutY="21.0" onMouseClicked="#nuevoAmigo" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="anhadirAmigo" fitHeight="34.0" fitWidth="33.0" layoutX="42.0" layoutY="23.0" onMouseClicked="#nuevoAmigo" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@addfriend.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="solicitudes" fitHeight="30.0" fitWidth="33.0" layoutX="81.0" layoutY="23.0" onMouseClicked="#clickSolicitudes" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="solicitudes" fitHeight="30.0" fitWidth="33.0" layoutX="93.0" layoutY="25.0" onMouseClicked="#clickSolicitudes" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@no_notificacion.png" />
          </image>
