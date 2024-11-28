@@ -1,6 +1,7 @@
 package p5.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import p5.Client.controllers.*;
 import p5.Server.*;
@@ -102,7 +103,9 @@ public class Client extends Application{
         }
         return null;
     }
-
+    public Image getImageNoti(){
+        return new Image("notificacion.png");
+    }
     public void abrirPrincipal() throws IOException, SQLException {
         stage.setTitle(cRemoto.getNombre());
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));

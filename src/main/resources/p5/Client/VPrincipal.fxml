@@ -40,10 +40,13 @@
             <Image url="@send.png" />
          </image>
       </ImageView>
-      <Label fx:id="tituloChat" layoutX="146.0" layoutY="12.0" prefHeight="25.0" prefWidth="222.0" />
+      <Label fx:id="tituloChat" layoutX="146.0" layoutY="12.0" prefHeight="25.0" prefWidth="222.0" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
       <ImageView fx:id="anhadirAmigo" fitHeight="34.0" fitWidth="33.0" layoutX="28.0" layoutY="21.0" onMouseClicked="#nuevoAmigo" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@icons8-agregar-usuario-masculino-50.png" />
+            <Image url="@addfriend.png" />
          </image>
       </ImageView>
       <ImageView fx:id="solicitudes" fitHeight="30.0" fitWidth="33.0" layoutX="81.0" layoutY="23.0" onMouseClicked="#clickSolicitudes" pickOnBounds="true" preserveRatio="true">

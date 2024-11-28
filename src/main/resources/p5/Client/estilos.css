@@ -43,7 +43,7 @@
 }
 .escribir-style {
 	-fx-background-color:  #2A0F38; /* Lila claro */
-	-fx-text-fill: #000000; /* Texto blanco */
+	-fx-text-fill: #FFFFFF; /* Texto blanco */
 	-fx-background-radius: 10px; /* Esquinas rectas (sin redondeo) */
 	-fx-border-radius: 10px; /* Asegura que el borde también sea recto */
 	-fx-padding: 6px 12px; /* Ajuste de tamaño interno del botón */
