@@ -2,6 +2,7 @@ package p5.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import p5.Client.controllers.*;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+
+import static javafx.scene.input.KeyCode.ENTER;
 
 public class Client extends Application{
     private Stage stage;
@@ -34,16 +37,15 @@ public class Client extends Application{
         primaryStage.setTitle("iniciar sesion");
         Scene iniciar = new Scene(loader.load(), 681.4, 400);
         CInicioSesion controller = loader.getController();
-        /*iniciar.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case ENTER:
-                    // Llamar a la función deseada
-                    controller.clickLogin();
-                    break;
-                default:
-                    break;
+        iniciar.setOnKeyPressed(event -> {
+            if(event.getCode() == ENTER){
+                    try {
+                        controller.clickLogin();
+                    } catch (Exception e) {
+                        System.out.println("SALTO EXCEPCION PULSANDO ENTER AL INICIAR SESION");
+                    }
             }
-        });*/
+        });
         stage.setOnCloseRequest(event -> {
             // Call your function here
             handleWindowClose(event);
@@ -127,6 +129,15 @@ public class Client extends Application{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VPrincipal.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600.4, 400);
         cPrincipal = fxmlLoader.getController();
+        scene.setOnKeyPressed(event -> {
+            if(event.getCode() == ENTER){
+                try {
+                    cPrincipal.enviarMensaje();
+                } catch (Exception e) {
+                    System.out.println("SALTO EXCEPCION PULSANDO ENTER EN LA VENTANA PRINCIPAL");
+                }
+            }
+        });
         cPrincipal.init(server,cRemoto.getNombresAmigos(),this);
         stage.setScene(scene);
         stage.setResizable(false);
