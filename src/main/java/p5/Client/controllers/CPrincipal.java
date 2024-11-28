@@ -38,6 +38,8 @@ public class CPrincipal {
     private ImageView anhadirAmigo;
     @FXML
     private Label tituloChat;
+    @FXML
+    private ScrollPane scrollPaneChats;
     private ServerInterface server;
     private Client main;
     private static int numSolis = 0;
@@ -54,6 +56,7 @@ public class CPrincipal {
         if(numSolis>0) solicitudes.setImage(main.getImageNoti());
         //solicitudes.setText("Solicitudes (" + numSolis + ")");
         crearListaAmigos(amigos);
+        configurarDragAndDrop(scrollPaneChats);
     }
     public void crearListaAmigos(ArrayList<String> amigos) throws IOException {
         boxAmigos.getChildren().clear();
@@ -65,7 +68,6 @@ public class CPrincipal {
                 chatActual.setPadding(new Insets(10));
 
                 chatsAbiertos.put(s, chatActual);
-                configurarDragAndDrop(chatActual);
             }
 
             FXMLLoader loader = main.crearTemp("amigos");
@@ -86,7 +88,6 @@ public class CPrincipal {
             chatActual.setPadding(new Insets(10));
 
             chatsAbiertos.put(nombre, chatActual);
-            configurarDragAndDrop(chatActual);
         }else{
             chatsAbiertos.remove(nombre);
 
@@ -173,6 +174,9 @@ public class CPrincipal {
     }
 
     public void enviarImagen(File archivo) {
+        if(userChatActual == null) {
+            return;
+        }
         ClientInterface receptor = main.getcRemoto().getAmigosConectadosHM().get(userChatActual);
         try (FileInputStream fis = new FileInputStream(archivo);
              ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
@@ -237,7 +241,7 @@ public class CPrincipal {
         });
     }
 
-    private void configurarDragAndDrop(VBox target) {
+    private void configurarDragAndDrop(ScrollPane target) {
         target.setOnDragOver(event -> {
             if (event.getGestureSource() != target && event.getDragboard().hasFiles()) {
                 event.acceptTransferModes(TransferMode.COPY_OR_MOVE);

@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="principal-style" stylesheets="@estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CPrincipal">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="principal-style" stylesheets="@estilos.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="p5.Client.controllers.CPrincipal">
    <children>
-      <ScrollPane hbarPolicy="NEVER" layoutX="146.0" layoutY="47.0" maxWidth="454.0" prefHeight="301.0" prefWidth="454.0" styleClass="mylistview">
+      <ScrollPane fx:id="scrollPaneChats" hbarPolicy="NEVER" layoutX="146.0" layoutY="47.0" maxWidth="454.0" prefHeight="301.0" prefWidth="454.0" styleClass="mylistview">
          <content>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
