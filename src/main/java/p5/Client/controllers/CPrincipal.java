@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import p5.Client.Client;
 import p5.Client.ClientInterface;
@@ -56,6 +57,8 @@ public class CPrincipal {
         if(numSolis>0) solicitudes.setImage(main.getImageNoti());
         //solicitudes.setText("Solicitudes (" + numSolis + ")");
         crearListaAmigos(amigos);
+        scrollPaneChats.setFitToWidth(true);
+        scrollPaneChats.setFitToHeight(true);
         configurarDragAndDrop(scrollPaneChats);
     }
     public void crearListaAmigos(ArrayList<String> amigos) throws IOException {
@@ -66,6 +69,7 @@ public class CPrincipal {
                 VBox chatActual = new VBox();
                 chatActual.setSpacing(10); // Espaciado entre los mensajes
                 chatActual.setPadding(new Insets(10));
+                VBox.setVgrow(chatActual, Priority.ALWAYS);
 
                 chatsAbiertos.put(s, chatActual);
             }
@@ -86,7 +90,7 @@ public class CPrincipal {
             VBox chatActual = new VBox();
             chatActual.setSpacing(10); // Espaciado entre los mensajes
             chatActual.setPadding(new Insets(10));
-
+            VBox.setVgrow(chatActual, Priority.ALWAYS);
             chatsAbiertos.put(nombre, chatActual);
         }else{
             chatsAbiertos.remove(nombre);
@@ -115,12 +119,11 @@ public class CPrincipal {
             VBox chatActual = chatsAbiertos.get(amigo);
             // Mostrar el chat
             chat.getChildren().add(chatActual);
-            System.out.println("creando chat con " + amigo);
         } else {
             // Si ya está abierto, mostrar el chat
             System.out.println("recuperando chat con " + amigo);
             VBox chatExistente = chatsAbiertos.get(amigo);
-            chat.getChildren().add(chatExistente);
+            scrollPaneChats.setContent(chatExistente);
 
         }
     }
@@ -152,6 +155,11 @@ public class CPrincipal {
         ClientInterface remoto = main.getcRemoto().getAmigosConectadosHM().get(userChatActual);
         remoto.enviarMensaje(msg.getText(), main.getcRemoto().getNombre());
         msg.setText("");
+
+        Platform.runLater(() -> {
+            scrollPaneChats.layout();
+            scrollPaneChats.setVvalue(1.0);
+        });
     }
     }
 
@@ -171,6 +179,10 @@ public class CPrincipal {
         Platform.runLater(() -> {
             chatsAbiertos.get(remitente).getChildren().add(hbox);
         });
+        Platform.runLater(() -> {
+            scrollPaneChats.layout();
+            scrollPaneChats.setVvalue(1.0);
+        });
     }
 
     public void enviarImagen(File archivo) {
@@ -188,45 +200,40 @@ public class CPrincipal {
             }
             byte[] imagenBytes = bos.toByteArray();
             receptor.recibirImagen(imagenBytes, archivo.getName(),main.getcRemoto().getNombre());
-            //crea un hbox y añade la imagen al chat
-            HBox hbox = new HBox();
-            hbox.setAlignment(Pos.CENTER_RIGHT);
-            ByteArrayInputStream bis = new ByteArrayInputStream(imagenBytes);
-            Image image = new Image(bis);
-            ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(100);
-            imageView.setFitWidth(100);
-            hbox.getChildren().add(imageView);
 
-            Platform.runLater(() -> {
-                chatsAbiertos.get(userChatActual).getChildren().add(hbox);
-            });
-
+            initImagen(imagenBytes, "right",userChatActual);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void recibirImagen(byte[] imagen, String nombreArchivo,String remitente) throws IOException {
-        // Crear un HBox para contener la imagen y alinearlo a la izquierda
-        HBox hbox = new HBox();
-        hbox.setAlignment(Pos.CENTER_LEFT);
+        initImagen(imagen, "left",remitente);
+    }
 
-        //quiero hacer un imageView para meter en el hbox
+    private void initImagen(byte[] imagen, String op,String chat){
+        HBox hbox = new HBox();
+        if(op.equals("left")){
+            hbox.setAlignment(Pos.CENTER_LEFT);
+        }else if(op.equals("right")){
+            hbox.setAlignment(Pos.CENTER_RIGHT);
+        }
         ByteArrayInputStream bis = new ByteArrayInputStream(imagen);
         Image image = new Image(bis);
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+        imageView.setPreserveRatio(true);
         hbox.getChildren().add(imageView);
 
         // Añadir el HBox al chat
         Platform.runLater(() -> {
-            chatsAbiertos.get(remitente).getChildren().add(hbox);
+            chatsAbiertos.get(chat).getChildren().add(hbox);
+        });
+        Platform.runLater(() -> {
+            scrollPaneChats.layout();
+            scrollPaneChats.setVvalue(1.0);
         });
     }
-
-
 
     @FXML
     public void nuevoAmigo() throws SQLException, IOException {
