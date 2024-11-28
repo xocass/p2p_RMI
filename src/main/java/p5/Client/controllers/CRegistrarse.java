@@ -26,10 +26,12 @@ public class CRegistrarse {
     @FXML
     private Label nodisponible;
     private Client main;
+    private int op;
 
-    public void init(ServerInterface server, Client client){
+    public void init(ServerInterface server, Client client,int op){
         this.main = client;
         this.server=server;
+        this.op=op;
     }
 
     @FXML
@@ -43,18 +45,33 @@ public class CRegistrarse {
             nodisponible.setText("Ingrese una contraseña");
         }
         else{
-            int val = server.registrarUsuario(nick.getText(),passwd.getText());
-            System.out.println(val);
-            if (val==1){
-                try {
-                    main.abrirInicioSesion();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if(op==1){
+                int val = server.registrarUsuario(nick.getText(),passwd.getText());
+                System.out.println(val);
+                if (val==1){
+                    try {
+                        main.abrirInicioSesion();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if (val==0){
+                    nodisponible.setVisible(true);
+                    nodisponible.setText("El nombre de usuario no está disponible");
                 }
-            }else if (val==0){
-                nodisponible.setVisible(true);
-                nodisponible.setText("El nombre de usuario no está disponible");
+            }else if(op==0){
+                int val = server.actualizarContrasenha(nick.getText(),passwd.getText());
+                if (val==1){
+                    try {
+                        main.abrirInicioSesion();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if (val==0){
+                    nodisponible.setVisible(true);
+                    nodisponible.setText("El nombre de usuario no existe");
+                }
             }
+
         }
     }
     @FXML

@@ -74,12 +74,12 @@ public class Client extends Application{
 
 
 
-    public void abrirRegistrar() throws IOException {
+    public void abrirRegistrar(int op) throws IOException {
         stage.setTitle("registrate");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VRegistrarse.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),385,326);
         CRegistrarse controller = fxmlLoader.getController();
-        controller.init(server,this);
+        controller.init(server,this,op);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
