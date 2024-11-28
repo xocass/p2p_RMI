@@ -27,13 +27,6 @@ public class Client extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /*FXMLLoader loader = new FXMLLoader(getClass().getResource("VRegistrarse.fxml"));
-        primaryStage.setTitle("prueba");
-        primaryStage.setScene(new Scene(loader.load(), 385, 216));
-        primaryStage.show();
-        cRegistrarse controller = loader.getController();
-        registroRMI();
-        controller.setServer(server);*/
         stage=primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
         primaryStage.setTitle("iniciar sesion");

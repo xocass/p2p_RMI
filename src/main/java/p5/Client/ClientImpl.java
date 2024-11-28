@@ -34,6 +34,12 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     public void enviarMensaje(String mensaje,String name) throws IOException {
         main.getcPrincipal().recibirMensaje(mensaje,name);
     }
+    @Override
+    public void recibirImagen(byte[] imagen, String nombreArchivo, String remitente) throws IOException {
+        main.getcPrincipal().recibirImagen(imagen,nombreArchivo,remitente);
+    }
+
+
 
     @Override
     public void actualizarListaAmigosConectados(String amigo,ClientInterface objeto,boolean conectado) throws IOException {
