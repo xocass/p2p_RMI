@@ -174,7 +174,7 @@ public class Client extends Application{
     public void abrirNuevoAmigo() throws IOException, SQLException {
         stage.setTitle("añadir nuevos amigos");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("VAnhadir.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 365, 221);
+        Scene scene = new Scene(fxmlLoader.load(), 365, 162);
         CAnhadir controller = fxmlLoader.getController();
         controller.init(this,cRemoto.getNombre());
         stage.setScene(scene);
@@ -183,7 +183,6 @@ public class Client extends Application{
     }
 
     public void nuevaSolicitudRecibida(String solicitante) {
-        cPrincipal.setSolImage(new Image(getClass().getResource("notificacion.png").toExternalForm()));
         if (stage.getTitle().equals("solicitudes")) {
             if (cSolicitudes != null) {
                 cSolicitudes.getNicks().add(solicitante);
@@ -200,7 +199,7 @@ public class Client extends Application{
         }
         if (stage.getTitle().equals(cRemoto.getNombre())) {
             if (cPrincipal != null) {
-                cPrincipal.nuevaSolicitudRecibida(solicitante);
+                cPrincipal.nuevaSolicitudRecibida(solicitante,new Image(getClass().getResource("notificacion.png").toExternalForm()));
             } else {
                 System.err.println("cPrincipal is null.");
             }

@@ -243,12 +243,10 @@ public class CPrincipal {
         main.abrirNuevoAmigo();
     }
 
-    public void nuevaSolicitudRecibida(String solicitante) {
+    public void nuevaSolicitudRecibida(String solicitante, Image image) {
+        solicitudes.setImage(image);
         solicitudesPendientes.add(solicitante);
         numSolis++;
-        Platform.runLater(() -> {
-            //solicitudes.setText("Solicitudes (" + numSolis + ")");
-        });
     }
 
     private void configurarDragAndDrop(ScrollPane target) {
@@ -268,9 +266,6 @@ public class CPrincipal {
             event.setDropCompleted(true);
             event.consume();
         });
-    }
-    public void setSolImage(Image image){
-        solicitudes.setImage(image);
     }
 
     private String getTiempoFormateado(){
