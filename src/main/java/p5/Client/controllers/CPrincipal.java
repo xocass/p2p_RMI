@@ -61,6 +61,7 @@ public class CPrincipal {
         crearListaAmigos(amigos);
         scrollPaneChats.setFitToWidth(true);
         scrollPaneChats.setFitToHeight(true);
+        VBox.setVgrow(boxAmigos, Priority.ALWAYS);
         configurarDragAndDrop(scrollPaneChats);
     }
     public void crearListaAmigos(ArrayList<String> amigos) throws IOException {
