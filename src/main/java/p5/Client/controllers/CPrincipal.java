@@ -156,7 +156,7 @@ public class CPrincipal {
 
         // Enviar el mensaje al cliente remoto
         ClientInterface remoto = main.getcRemoto().getAmigosConectadosHM().get(userChatActual);
-        remoto.enviarMensaje(msg.getText(), main.getcRemoto().getNombre());
+        remoto.recibirMensaje(msg.getText(), main.getcRemoto().getNombre());
         msg.setText("");
 
         Platform.runLater(() -> {

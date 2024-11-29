@@ -28,7 +28,6 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         try {
             // Establecer conexión
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Conexion exitosa a Supabase");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,51 +36,43 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
     @Override
     public int registrarUsuario(String name, String passwd) throws RemoteException, SQLException {
-        // Hashear la contraseña
         String hashedPasswd = hashPassword(passwd);
         if (hashedPasswd == null) {
             System.err.println("Error al hashear la contraseña.");
             return 0;
         }
 
-        // Conectar a la base de datos
         conexionBD();
 
-        // Consulta SQL para insertar un usuario
         String insertQuery = "INSERT INTO usuario (nick, passwd) VALUES (?, ?)\n" +
                 "ON CONFLICT (nick) DO NOTHING;\n";
 
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
-            // Configurar los parámetros de la consulta
             stmt.setString(1, name);
             stmt.setString(2, hashedPasswd);
 
-            // Ejecutar la consulta
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Usuario registrado correctamente: " + name);
                 if (connection != null && !connection.isClosed()) {
                     connection.close();
-                    System.out.println("Conexion cerrada.");
                 }
                 return 1;
             } else {
                 System.out.println("No se pudo registrar el usuario.");
                 if (connection != null && !connection.isClosed()) {
                     connection.close();
-                    System.out.println("Conexion cerrada.");
                 }
                 return 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error al registrar el usuario: " + e.getMessage());
-            throw e; // Lanzar la excepción si ocurre un error
+            throw e;
         }
     }
 
     public int actualizarContrasenha(String nick, String newPasswd) throws SQLException, RemoteException {
-        //haz que se actualice la contraseña en la base de datos
         conexionBD();
         String hashedPasswd = hashPassword(newPasswd);
         if (hashedPasswd == null) {
@@ -90,11 +81,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
         String updateQuery = "UPDATE usuario SET passwd = ? WHERE nick = ?";
         try (PreparedStatement stmt = connection.prepareStatement(updateQuery)) {
-            // Configurar los parámetros de la consulta
             stmt.setString(1, hashedPasswd);
             stmt.setString(2, nick);
 
-            // Ejecutar la consulta
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0 ? 1 : 0;
         } catch (SQLException e) {
@@ -105,31 +94,27 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             // Cerrar la conexión
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Conexion cerrada.");
             }
         }
     }
 
     @Override
     public HashMap<String,ClientInterface> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
-        conexionBD(); // Establecer conexión a la base de datos
+        conexionBD();
 
         String query = "SELECT nick,passwd FROM usuario WHERE nick = ?";
         int resultado = 0;
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            // Configurar los parámetros de la consulta
             stmt.setString(1, name);
 
             // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) { // Verifica si la contraseña es válida
+                if (rs.next()) {
                     String hashAlmacenado = rs.getString("passwd");
 
-                    // Hashear la contraseña ingresada para comparar
                     String hashIngresado = hashPassword(passwd);
 
-                    // Comparar los hashes
                     if (hashAlmacenado.equals(hashIngresado)) {
                         resultado = 1;
                     }
@@ -140,7 +125,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
                 HashMap<String,ClientInterface> amigosConectados = new HashMap<>();
                 for (String amigo : amigos) {
-                    if (conectados.containsKey(amigo)) { // Verificar si el amigo está conectado
+                    if (conectados.containsKey(amigo)) {
                         amigosConectados.put(amigo,conectados.get(amigo));
                     }
                 }
@@ -152,12 +137,10 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error al iniciar sesión: " + e.getMessage());
-            throw e; // Lanzar la excepción si ocurre un error
+            throw e;
         } finally {
-            // Cerrar conexión
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Conexion cerrada.");
             }
         }
     }
@@ -230,30 +213,25 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
 
     public List<String> obtenerAmigos(String amigo) throws SQLException {
-        // Asegurarse de que la conexión está establecida antes de realizar la consulta
         conexionBD();
 
         List<String> amigos = new ArrayList<>();
-        // Consulta SQL para obtener todos los amigos del usuario
         String query = "SELECT usuario1, usuario2 FROM amigos WHERE usuario1 = ? OR usuario2 = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            // Configurar los parámetros de la consulta
             stmt.setString(1, amigo);
             stmt.setString(2, amigo);
 
-            // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     String usuario1 = rs.getString("usuario1");
                     String usuario2 = rs.getString("usuario2");
 
-                    // Verificar quién es el amigo, ya que uno de ellos será el usuario
                     if (!usuario1.equals(amigo)) {
-                        amigos.add(usuario1);  // Usuario1 es amigo de 'amigo'
+                        amigos.add(usuario1);
                     }
                     if (!usuario2.equals(amigo)) {
-                        amigos.add(usuario2);  // Usuario2 es amigo de 'amigo'
+                        amigos.add(usuario2);
                     }
                 }
             }
@@ -273,7 +251,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             byte[] hashedBytes = md.digest(password.getBytes());
             StringBuilder sb = new StringBuilder();
             for (byte b : hashedBytes) {
-                sb.append(String.format("%02x", b)); // Convertir byte a hexadecimal
+                sb.append(String.format("%02x", b));
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
@@ -282,21 +260,19 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
     private boolean existeUsuario(String nick) throws RemoteException, SQLException {
-        conexionBD(); // Establecer conexión a la base de datos
+        conexionBD();
 
         String query = "SELECT 1 FROM usuario WHERE nick = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            // Configurar el parámetro de la consulta
             stmt.setString(1, nick);
 
-            // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next(); // Devuelve true si hay al menos un resultado
+                return rs.next();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error al comprobar si el usuario existe: " + e.getMessage());
-            throw e; // Propagar la excepción si ocurre un error
+            throw e;
         }
     }
 
@@ -304,13 +280,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
         String query = "SELECT 1 FROM amigos WHERE usuario1 = ? AND usuario2 = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            // Configurar el parámetro de la consulta
             stmt.setString(1, usuario1);
             stmt.setString(2, usuario2);
 
-            // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next(); // Devuelve true si hay al menos un resultado
+                return rs.next();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -320,7 +294,6 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     }
 
     private boolean existeSolicitud(String solicitante, String solicitado) throws SQLException {
-        // Consulta SQL para comprobar si existe una solicitud entre dos usuarios
         String query = "SELECT 1 FROM solicitudes WHERE solicitante = ? AND solicitado = ? OR solicitante = ? AND solicitado = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -330,7 +303,6 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             stmt.setString(3, solicitado);
             stmt.setString(4, solicitante);
 
-            // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next();
             }
@@ -346,13 +318,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     public int anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();
         if(!existeUsuario(solicitado)){
-            //usuario no existe
             return 2;
         }
         if(existenAmigos(solicitado,solicitante)){
             return 3;
         }
-        //añade una comprobacion que sea si ya existe la solicitud
         if (existeSolicitud(solicitante, solicitado)) {
             return 4;
         }
@@ -367,19 +337,16 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Solicitud añadida correctamente.");
-                //solicitud enviada
                 return 1;
             } else {
                 System.out.println("No se pudo añadir la solicitud (0 filas afectadas).");
-                return 0; // Error
+                return 0;
             }
         } catch (SQLException e) {
-            // Manejo de errores
             e.printStackTrace();
             System.err.println("Error al añadir solicitud: " + e.getMessage());
             return 0;
         } finally {
-            // Cerrar la conexión
             if (connection != null && !connection.isClosed()) {
                 connection.close();
                 System.out.println("Conexión cerrada.");
@@ -402,15 +369,12 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     }
 
     private void quitarSolicitud(String solicitante, String solicitado) throws SQLException {
-        // Consulta SQL para eliminar la solicitud correspondiente
         String deleteQuery = "DELETE FROM solicitudes WHERE solicitante = ? AND solicitado = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
-            // Configurar los parámetros de la consulta
             stmt.setString(1, solicitante);
             stmt.setString(2, solicitado);
 
-            // Ejecutar la consulta
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Solicitud eliminada correctamente.");
@@ -420,9 +384,8 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error al eliminar la solicitud: " + e.getMessage());
-            throw e; // Propagar la excepción si ocurre un error
+            throw e;
         } finally {
-            // Cerrar la conexión
             if (connection != null && !connection.isClosed()) {
                 connection.close();
                 System.out.println("Conexión cerrada.");
@@ -431,11 +394,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     }
 
     private void anhadirAmigos(String usuario1, String usuario2) throws SQLException {
-        // Consulta SQL para insertar una nueva relación de amigos
         String insertQuery = "INSERT INTO amigos (usuario1, usuario2) VALUES (?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
-            // Configurar los parámetros de la consulta
             stmt.setString(1, usuario1);
             stmt.setString(2, usuario2);
 
@@ -448,9 +409,8 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error al añadir amigos: " + e.getMessage());
-            throw e; // Propagar la excepción si ocurre un error
+            throw e;
         } finally {
-            // Cerrar la conexión
             if (connection != null && !connection.isClosed()) {
                 connection.close();
                 System.out.println("Conexion cerrada.");
@@ -460,21 +420,16 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
     @Override
     public ArrayList<String> buscarSolicitudesUsuario(String name) throws RemoteException, SQLException {
-        // Conectar a la base de datos
         conexionBD();
 
-        // Lista para almacenar los nombres de los solicitantes
         ArrayList<String> solicitantes = new ArrayList<>();
 
         String query = "SELECT solicitante FROM solicitudes WHERE solicitado = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            // Configurar el parámetro de la consulta
             stmt.setString(1, name);
 
-            // Ejecutar la consulta
             try (ResultSet rs = stmt.executeQuery()) {
-                // Recorrer el resultado y agregar los nombres a la lista
                 while (rs.next()) {
                     solicitantes.add(rs.getString("solicitante"));
                 }
@@ -482,9 +437,8 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Error al buscar las solicitudes para el usuario " + name + ": " + e.getMessage());
-            throw e; // Relanzar la excepción si ocurre un error
+            throw e;
         } finally {
-            // Cerrar la conexión
             if (connection != null && !connection.isClosed()) {
                 connection.close();
                 System.out.println("Conexión cerrada.");
