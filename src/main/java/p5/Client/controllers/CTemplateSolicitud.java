@@ -2,10 +2,8 @@ package p5.Client.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import p5.Client.Client;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 public class CTemplateSolicitud {
