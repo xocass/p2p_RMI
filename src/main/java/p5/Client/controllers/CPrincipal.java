@@ -95,7 +95,7 @@ public class CPrincipal {
             chatsAbiertos.put(nombre, chatActual);
         }else{
             chatsAbiertos.remove(nombre);
-            if(userChatActual.equals(nombre)){
+            if(userChatActual != null && userChatActual.equals(nombre)){
                 scrollPaneChats.setContent(null);
                 userChatActual=null;
                 tituloChat.setText("");
