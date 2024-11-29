@@ -29,7 +29,7 @@ public class Server{
             System.out.println(name + " ready.");
         }// end try
         catch (Exception re) {
-            System.out.println("Exception in HelloServer.main: " + re);
+            System.out.println("Exception in Server.main: " + re);
         } // end catch
     } // end main
 

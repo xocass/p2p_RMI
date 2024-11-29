@@ -73,13 +73,14 @@ public class Client extends Application{
 
     private void registroRMI(){
         try {/*
-            String registryURL = "rmi://172.20.10.3/server";
+            String registryURL = "rmi://localhost/server";
             System.out.println(registryURL);
             // se castea el objeto remoto a la interfaz de servidor
             server = (ServerInterface) Naming.lookup(registryURL);
             System.out.println("Lookup completed");*/
-            Registry registro = LocateRegistry.getRegistry("192.168.27.154",1099);
-            server = (ServerInterface)registro.lookup("server");
+            Registry reg = LocateRegistry.getRegistry("192.168.27.154",1099);
+            server = (ServerInterface) reg.lookup("server");
+            System.out.println("Lookup completed");
 
         } // end try
         catch (Exception e) {
