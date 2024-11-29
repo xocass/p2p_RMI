@@ -99,6 +99,7 @@ public class CPrincipal {
             if(userChatActual.equals(nombre)){
                 scrollPaneChats.setContent(null);
                 userChatActual=null;
+                tituloChat.setText("");
             }
         }
         boxAmigos.getChildren().clear();
