@@ -1,22 +1,16 @@
 package p5.Client.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import p5.Client.Client;
-import p5.Client.ClientImpl;
 import p5.Client.ClientInterface;
 import p5.Server.ServerInterface;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 
 public class CInicioSesion {
     @FXML
@@ -25,10 +19,6 @@ public class CInicioSesion {
     private TextField nickField;
     @FXML
     private TextField pswField;
-    @FXML
-    private Label registrate;
-    @FXML
-    private Button login;
 
     private Client main;
     private ServerInterface server;

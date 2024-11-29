@@ -8,7 +8,6 @@ import p5.Client.controllers.*;
 import p5.Server.*;
 
 import java.io.*;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -138,7 +137,7 @@ public class Client extends Application{
                 }
             }
         });
-        cPrincipal.init(server,cRemoto.getNombresAmigos(),this);
+        cPrincipal.init(cRemoto.getNombresAmigos(),this);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

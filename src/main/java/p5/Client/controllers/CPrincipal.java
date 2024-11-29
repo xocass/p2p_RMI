@@ -36,14 +36,9 @@ public class CPrincipal {
     @FXML
     private TextField msg;
     @FXML
-    private ImageView enviar;
-    @FXML
-    private ImageView anhadirAmigo;
-    @FXML
     private Label tituloChat;
     @FXML
     private ScrollPane scrollPaneChats;
-    private ServerInterface server;
     private Client main;
     private static int numSolis = 0;
     private static ArrayList<String> solicitudesPendientes = new ArrayList<>();
@@ -51,13 +46,11 @@ public class CPrincipal {
     private String userChatActual;
 
 
-    public void init(ServerInterface server, ArrayList<String> amigos,Client main) throws IOException, SQLException {
-        this.server=server;
+    public void init( ArrayList<String> amigos,Client main) throws IOException, SQLException {
         this.main=main;
         solicitudesPendientes = main.getServer().buscarSolicitudesUsuario(main.getcRemoto().getNombre());
         numSolis = solicitudesPendientes.size();
         if(numSolis>0) solicitudes.setImage(main.getImageNoti());
-        //solicitudes.setText("Solicitudes (" + numSolis + ")");
         crearListaAmigos(amigos);
         scrollPaneChats.setFitToWidth(true);
         scrollPaneChats.setFitToHeight(true);

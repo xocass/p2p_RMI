@@ -1,27 +1,19 @@
 package p5.Client.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import org.w3c.dom.Text;
 import p5.Client.Client;
 import p5.Client.ClientInterface;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 public class CAnhadir {
     @FXML
-    private ImageView atras;
-    @FXML
     private Label solicitudEnviada;
     @FXML
     private TextField field;
-    @FXML
-    private ImageView enviar;
     private Client main;
     private String nick;
 
