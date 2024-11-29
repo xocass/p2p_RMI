@@ -2,7 +2,6 @@ package p5.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import p5.Client.controllers.*;
@@ -32,11 +31,13 @@ public class Client extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //se inicia la ventana de iniciar sesión
         stage=primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VInicioSesion.fxml"));
         primaryStage.setTitle("iniciar sesion");
         Scene iniciar = new Scene(loader.load(), 681.4, 400);
         CInicioSesion controller = loader.getController();
+        //se configura el cierre de ventanas y la acción de pulsar enter
         iniciar.setOnKeyPressed(event -> {
             if(event.getCode() == ENTER){
                     try {
@@ -47,8 +48,7 @@ public class Client extends Application{
             }
         });
         stage.setOnCloseRequest(event -> {
-            // Call your function here
-            handleWindowClose(event);
+            manejarCierreVentana(event);
         });
         primaryStage.setScene(iniciar);
         primaryStage.setResizable(false);
@@ -73,7 +73,7 @@ public class Client extends Application{
         try {
             String registryURL = "rmi://localhost/server";
             System.out.println(registryURL);
-            // find the remote object and cast it to an interface object
+            // se castea el objeto remoto a la interfaz de servidor
             server = (ServerInterface) Naming.lookup(registryURL);
             System.out.println("Lookup completed");
 
@@ -107,6 +107,7 @@ public class Client extends Application{
         stage.show();
     }
 
+    //función para iniciar diferentes templates
     public FXMLLoader crearTemp(String opcion){
         switch(opcion){
             case "amigos":
@@ -151,6 +152,7 @@ public class Client extends Application{
         System.out.println("Cliente registrado en el servidor central.");
     }
 
+
     public void actualizarListaAmigos(String amigo,boolean conectado) throws IOException {
         Platform.runLater(() -> {
             try {
@@ -182,6 +184,8 @@ public class Client extends Application{
         stage.show();
     }
 
+    //dependiendo de la ventana en la que esté se llama a una función manejadora distinta
+    //(solo se maneja en ventana principal y solicitudes)
     public void nuevaSolicitudRecibida(String solicitante) {
         if (stage.getTitle().equals("solicitudes")) {
             if (cSolicitudes != null) {
@@ -206,7 +210,7 @@ public class Client extends Application{
         }
     }
 
-    private void handleWindowClose(WindowEvent event) {
+    private void manejarCierreVentana(WindowEvent event) {
         try {
             server.notificarDesconexion(cRemoto.getNombre());
             System.out.println("Cliente desconectado del servidor central.");
