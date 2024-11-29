@@ -10,6 +10,8 @@ import p5.Server.*;
 import java.io.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -70,13 +72,14 @@ public class Client extends Application{
     }
 
     private void registroRMI(){
-        try {
-            String registryURL = "rmi://localhost/server";
+        try {/*
+            String registryURL = "rmi://172.20.10.3/server";
             System.out.println(registryURL);
             // se castea el objeto remoto a la interfaz de servidor
             server = (ServerInterface) Naming.lookup(registryURL);
-            System.out.println("Lookup completed");
-
+            System.out.println("Lookup completed");*/
+            Registry registro = LocateRegistry.getRegistry("192.168.27.154",1099);
+            server = (ServerInterface)registro.lookup("server");
 
         } // end try
         catch (Exception e) {

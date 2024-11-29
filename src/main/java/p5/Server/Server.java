@@ -12,6 +12,7 @@ import java.rmi.registry.Registry;
 public class Server{
 
     public static void main(String args[]) {
+        System.setProperty("java.rmi.server.hostname", "192.168.27.154");
         InputStreamReader is = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(is);
         String portNum, registryURL;
@@ -19,14 +20,12 @@ public class Server{
             String name = "server";
             portNum = "1099";
             int RMIPortNum = Integer.parseInt(portNum);
-            startRegistry(RMIPortNum);
+            startRegistry(1099);
             ServerImpl exportedObj = new ServerImpl();
-            registryURL = "rmi://localhost/server";
-            Naming.rebind(registryURL, exportedObj);
-            /**/     System.out.println
-/**/        ("Server registered.  Registry currently contains:");
-            /**/     // list names currently in the registry
-            /**/     listRegistry(registryURL);
+            //registryURL = "rmi://192.168.56.1/server";
+            Naming.rebind("server", exportedObj);
+            System.out.println("Server registered.  Registry currently contains:");
+            //listRegistry(registryURL);
             System.out.println(name + " ready.");
         }// end try
         catch (Exception re) {
@@ -38,21 +37,17 @@ public class Server{
     // does not already exist at the specified port number.
     private static void startRegistry(int RMIPortNum)
             throws RemoteException {
-        try {
+        /*try {
             Registry registry = LocateRegistry.getRegistry(RMIPortNum);
             registry.list( );  // This call will throw an exception
             // if the registry does not already exist
         }
         catch (RemoteException e) {
             // No valid registry at that port.
-            /**/     System.out.println
-/**/        ("RMI registry cannot be located at port "
-        /**/        + RMIPortNum);
-            Registry registry =
-                    LocateRegistry.createRegistry(RMIPortNum);
-            /**/        System.out.println(
-                    /**/           "RMI registry created at port " + RMIPortNum);
-        }
+            System.out.println("RMI registry cannot be located at port " + RMIPortNum);*/
+            Registry registry = LocateRegistry.createRegistry(RMIPortNum);
+            System.out.println("RMI registry created at port " + RMIPortNum);
+        //}
     } // end startRegistry
 
     // This method lists the names registered with a Registry object
