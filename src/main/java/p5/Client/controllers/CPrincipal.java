@@ -39,6 +39,9 @@ public class CPrincipal {
     private Label tituloChat;
     @FXML
     private ScrollPane scrollPaneChats;
+    @FXML
+    private ScrollPane ScrollpaneAmigos;
+
     private Client main;
     private static int numSolis = 0;
     private static ArrayList<String> solicitudesPendientes = new ArrayList<>();
@@ -54,6 +57,9 @@ public class CPrincipal {
         crearListaAmigos(amigos);
         scrollPaneChats.setFitToWidth(true);
         scrollPaneChats.setFitToHeight(true);
+        ScrollpaneAmigos.setFitToWidth(true);
+        ScrollpaneAmigos.setFitToHeight(true);
+        VBox.setVgrow(boxAmigos, Priority.ALWAYS);
         configurarDragAndDrop(scrollPaneChats);
     }
     public void crearListaAmigos(ArrayList<String> amigos) throws IOException {
