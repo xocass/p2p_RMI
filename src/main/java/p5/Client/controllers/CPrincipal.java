@@ -96,7 +96,10 @@ public class CPrincipal {
             chatsAbiertos.put(nombre, chatActual);
         }else{
             chatsAbiertos.remove(nombre);
-
+            if(userChatActual.equals(nombre)){
+                scrollPaneChats.setContent(null);
+                userChatActual=null;
+            }
         }
         boxAmigos.getChildren().clear();
         for(String s: chatsAbiertos.keySet()){
