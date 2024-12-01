@@ -31,6 +31,9 @@ public class CRegistrarse {
         this.op=op;
     }
 
+
+    //Función que registra un usuario en la base de datos con la opción 1
+    //Actualiza la contraseña de un usuario existente con la opción 0
     @FXML
     public void clickRegistrar(ActionEvent event) throws SQLException, RemoteException {
         if(!passwd.getText().equals(passwd2.getText())){

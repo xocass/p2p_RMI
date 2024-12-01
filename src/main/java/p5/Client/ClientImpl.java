@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//Implementación de la interfaz del cliente
 public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     private final String nombre;
+
+    //Atributo HashMap que contiene los amigos conectados y sus referencias
     private HashMap<String,ClientInterface> amigosConectados;
     private Client main;
 
@@ -34,12 +37,11 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
     public void recibirMensaje(String mensaje, String name) throws IOException {
         main.getcPrincipal().recibirMensaje(mensaje,name);
     }
+
     @Override
     public void recibirImagen(byte[] imagen, String nombreArchivo, String remitente) throws IOException {
         main.getcPrincipal().recibirImagen(imagen,nombreArchivo,remitente);
     }
-
-
 
     @Override
     public void actualizarListaAmigosConectados(String amigo,ClientInterface objeto,boolean conectado) throws IOException {
@@ -56,6 +58,7 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface {
         }
         main.actualizarListaAmigos(amigo,conectado);
     }
+
     @Override
     public void nuevaSolicitudRecibida(String solicitante) throws IOException {
         main.nuevaSolicitudRecibida(solicitante);

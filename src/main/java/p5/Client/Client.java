@@ -72,7 +72,7 @@ public class Client extends Application{
 
     private void registroRMI(){
         try {
-            Registry reg = LocateRegistry.getRegistry("192.168.27.154",1099);
+            Registry reg = LocateRegistry.getRegistry("localhost",1099);
             server = (ServerInterface) reg.lookup("server");
             System.out.println("Lookup completed");
 

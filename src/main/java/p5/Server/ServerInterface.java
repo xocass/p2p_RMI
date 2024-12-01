@@ -35,8 +35,16 @@ public interface ServerInterface extends Remote{
 
     //Añade una solicitud de amistad a la base de datos
     int anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
+
+    //Acepta una solicitud de amistad de un usuario y almacena la relación de amistad en la base de datos
     void aceptarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
+
+    //Rechaza una solicitud de amistad de un usuario y la elimina de la base de datos
     void rechazarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException;
+
+    //Devuelve una lista con las solicitudes de amistad pendientes de un usuario
     ArrayList<String> buscarSolicitudesUsuario(String name) throws RemoteException, SQLException;
+
+    //Notifica a un usuario conectado que ha una solicitud de amistad pendiente enviada ha sido aceptada
     void notificarUsuario(String user, String notificado) throws RemoteException;
 }

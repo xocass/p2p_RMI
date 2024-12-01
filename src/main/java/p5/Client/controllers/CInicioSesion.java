@@ -30,6 +30,8 @@ public class CInicioSesion {
     public void cambiarPasswd() throws IOException {
         main.abrirRegistrar(0);
     }
+
+    //Función que verifica las credenciales de un usuario y lo conecta al servidor
     @FXML
     public void clickLogin() throws SQLException, IOException {
         String nick = nickField.getText();
