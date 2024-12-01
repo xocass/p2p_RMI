@@ -5,7 +5,6 @@ import p5.Client.ClientInterface;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.KeyException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,20 +12,21 @@ import java.util.List;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+
+//Clase de implementación de las funciones de la interfaz del servidor
 public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
     private Connection connection;
 
     public ServerImpl() throws RemoteException {
     }
 
+    //Función que conecta con la base de datos
     private void conexionBD(){
-        // Datos de conexión
         String url = "jdbc:postgresql://aws-0-eu-west-3.pooler.supabase.com:6543/postgres?user=postgres.rmhynaxyudvptpoijyuy&password=¿amocomdis!";
         String user = "postgres.rmhynaxyudvptpoijyuy";
         String password = "¿amocomdis!";
 
         try {
-            // Establecer conexión
             connection = DriverManager.getConnection(url, user, password);
 
         } catch (Exception e) {
@@ -34,6 +34,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que registra un usuario en la base de datos
     @Override
     public int registrarUsuario(String name, String passwd) throws RemoteException, SQLException {
         String hashedPasswd = hashPassword(passwd);
@@ -41,9 +42,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             System.err.println("Error al hashear la contraseña.");
             return 0;
         }
-
         conexionBD();
-
         String insertQuery = "INSERT INTO usuario (nick, passwd) VALUES (?, ?)\n" +
                 "ON CONFLICT (nick) DO NOTHING;\n";
 
@@ -72,6 +71,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que actualiza la contraseña de un usuario en la base de datos
     public int actualizarContrasenha(String nick, String newPasswd) throws SQLException, RemoteException {
         conexionBD();
         String hashedPasswd = hashPassword(newPasswd);
@@ -98,6 +98,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que comprueba si el usuario y la contraseña insertados son una tupla de la tabla usuario
     @Override
     public HashMap<String,ClientInterface> iniciarSesion(String name, String passwd) throws RemoteException, SQLException {
         conexionBD();
@@ -145,17 +146,20 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que registra a un cliente en el Hashmap de conectados
     @Override
     public void registrarCliente(String nombre, ClientInterface referencia) throws RemoteException {
         conectados.put(nombre, referencia);
         System.out.println("Cliente registrado: " + nombre);
     }
 
+    //Función que devuelve la interfaz cliente del HashMap de conectados.
     @Override
     public ClientInterface obtenerCliente(String nombre) throws RemoteException {
         return conectados.get(nombre);
     }
 
+    //Función que notifica a todos los amigos conectados de que te has conectado, añadiendote a sus arrays de amigos
     @Override
     public void notificarConexion(String name) throws RemoteException, SQLException {
         // Obtener la lista de amigos conectados del cliente que se conecta
@@ -175,15 +179,14 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que notifica a todos los amigos que están conectados de que te has desconectado, eliminándote de sus listas de amigos conectados
     @Override
     public void notificarDesconexion(String name) throws RemoteException, SQLException {
-        // Obtener la lista de amigos conectados del cliente que se desconecta
         List<String> amigos = obtenerAmigos(name);
         ClientInterface objDesconexion = conectados.get(name);
         for (String amigo : amigos) {
             if (conectados.containsKey(amigo)) {
                 ClientInterface amigoConectado = conectados.get(amigo);
-                // Notificar al amigo conectado que este cliente se ha desconectado
                 try {
                     amigoConectado.actualizarListaAmigosConectados(name,objDesconexion,false);
                 } catch (IOException e) {
@@ -194,6 +197,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         conectados.remove(name);
     }
 
+    //Notifica a un solo usuario, se llama al aceptar una solicitud de amistad
     @Override
     public void notificarUsuario(String user, String notificado) throws RemoteException{
         ClientInterface objUser = conectados.get(user);
@@ -211,7 +215,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
 
     }
 
-
+    //Función que devuelve todos los amigos de un usuario
     public List<String> obtenerAmigos(String amigo) throws SQLException {
         conexionBD();
 
@@ -244,7 +248,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         return amigos;
     }
 
-    // Método para hashear la contraseña (algoritmo SHA-256)
+    //Método para hashear la contraseña (algoritmo SHA-256)
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -259,6 +263,8 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
             return null;
         }
     }
+
+    //Función que devuelve si un usuario existe en la base de datos
     private boolean existeUsuario(String nick) throws RemoteException, SQLException {
         conexionBD();
 
@@ -276,6 +282,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que comprueba si dos personas son amigos
     private boolean existenAmigos(String usuario1, String usuario2) throws RemoteException, SQLException {
 
         String query = "SELECT 1 FROM amigos WHERE usuario1 = ? AND usuario2 = ?";
@@ -293,11 +300,11 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que comprueba si ya existe una solicitud en la base de datos
     private boolean existeSolicitud(String solicitante, String solicitado) throws SQLException {
         String query = "SELECT 1 FROM solicitudes WHERE solicitante = ? AND solicitado = ? OR solicitante = ? AND solicitado = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            // Configurar los parámetros de la consulta
             stmt.setString(1, solicitante);
             stmt.setString(2, solicitado);
             stmt.setString(3, solicitado);
@@ -313,7 +320,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
-
+    //Función que añade una solicitud a la base de datos
     @Override
     public int anhadirSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();
@@ -329,11 +336,9 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         String insertQuery = "INSERT INTO solicitudes (solicitante, solicitado) VALUES (?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
-            // Configurar los parámetros de la consulta
             stmt.setString(1, solicitante);
             stmt.setString(2, solicitado);
 
-            // Ejecutar la consulta
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Solicitud añadida correctamente.");
@@ -354,6 +359,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que borra la solicitud de la base de datos y añade la tupla de amigos
     @Override
     public void aceptarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();
@@ -362,12 +368,14 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         anhadirAmigos(solicitante,solicitado);
     }
 
+    //Función que llama a la función que borra la solicitud de la base de datos
     @Override
     public void rechazarSolicitud(String solicitante, String solicitado) throws RemoteException, SQLException {
         conexionBD();
         quitarSolicitud(solicitante,solicitado);
     }
 
+    //Función que quita la solicitud de la base de datos
     private void quitarSolicitud(String solicitante, String solicitado) throws SQLException {
         String deleteQuery = "DELETE FROM solicitudes WHERE solicitante = ? AND solicitado = ?";
 
@@ -393,6 +401,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que añade una tupla de amigos a la base de datos
     private void anhadirAmigos(String usuario1, String usuario2) throws SQLException {
         String insertQuery = "INSERT INTO amigos (usuario1, usuario2) VALUES (?, ?)";
 
@@ -418,6 +427,7 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
         }
     }
 
+    //Función que devuelve las solicitudes recibidas por un usuario
     @Override
     public ArrayList<String> buscarSolicitudesUsuario(String name) throws RemoteException, SQLException {
         conexionBD();
@@ -444,7 +454,6 @@ public class ServerImpl extends UnicastRemoteObject implements ServerInterface{
                 System.out.println("Conexión cerrada.");
             }
         }
-
         return solicitantes;
     }
 

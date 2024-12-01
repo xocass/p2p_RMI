@@ -5,11 +5,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import p5.Client.Client;
 import p5.Client.ClientInterface;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
+//Controlador de la ventana de añadir amigos
 public class CAnhadir {
+
     @FXML
     private Label solicitudEnviada;
     @FXML
@@ -17,11 +18,13 @@ public class CAnhadir {
     private Client main;
     private String nick;
 
+    //Inciación de los atributos
     public void init(Client main,String nick){
         this.main=main;
         this.nick=nick;
     }
 
+    //Función de enviar solicitud. Coge el valor del TextField y dependiendo del resultado imprime un texto
     public void enviarSoli() throws SQLException, IOException {
 
         if(field.getText().isEmpty()){
@@ -55,6 +58,7 @@ public class CAnhadir {
         }
     }
 
+    //Pulsar botón página anterior
     public void atras() throws IOException, SQLException {
         main.abrirPrincipal();
     }

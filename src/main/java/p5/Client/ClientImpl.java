@@ -5,7 +5,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 //Implementación de la interfaz del cliente
 public class ClientImpl extends UnicastRemoteObject implements ClientInterface {

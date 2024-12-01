@@ -16,7 +16,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import p5.Client.Client;
 import p5.Client.ClientInterface;
-import p5.Server.ServerInterface;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 
+//Ventana principal
 public class CPrincipal {
     @FXML
     private VBox boxAmigos;
@@ -48,7 +48,7 @@ public class CPrincipal {
     private static final HashMap<String, VBox> chatsAbiertos = new HashMap<>();
     private String userChatActual;
 
-
+    //Inicialización de los atributos
     public void init( ArrayList<String> amigos,Client main) throws IOException, SQLException {
         this.main=main;
         solicitudesPendientes = main.getServer().buscarSolicitudesUsuario(main.getcRemoto().getNombre());
@@ -62,11 +62,12 @@ public class CPrincipal {
         VBox.setVgrow(boxAmigos, Priority.ALWAYS);
         configurarDragAndDrop(scrollPaneChats);
     }
+
+    //Recorre la lista de amigos y coloca en el VBox de amigos los que están conectados
     public void crearListaAmigos(ArrayList<String> amigos) throws IOException {
         boxAmigos.getChildren().clear();
         for(String s:amigos){
             if(!chatsAbiertos.containsKey(s)){
-                // Crear un VBox vacío para el chat
                 VBox chatActual = new VBox();
                 chatActual.setSpacing(10); // Espaciado entre los mensajes
                 chatActual.setPadding(new Insets(10));
@@ -79,13 +80,13 @@ public class CPrincipal {
             boxAmigos.getChildren().add(loader.load());
             CTemplateAmigo controller = loader.getController();
             controller.setNick(s);
-            // Obtener el botón del template y asignar la acción al pulsar
             controller.getNick().setOnMouseClicked(event -> {
                 abrirChat(s);
             });
         }
     }
 
+    //Actualiza el VBox de amigos conectados. Se llama cada vez que un amigo se conecta, se desconecta o se añade/elimina un amigo.
     public void actualizarListaAmigos(String nombre, boolean conectado) throws IOException {
         if(conectado){
             VBox chatActual = new VBox();
@@ -114,18 +115,17 @@ public class CPrincipal {
         }
     }
 
+    //Cambia el contenido del ScrollPane del chat. Para ello se guardan todos los VBoxes con los chats abiertos,
+    //y se cambia el que está asignado al ScrollPane por el del amigo seleccionado, si no se abrió aún se crea y se guarda.
     @FXML
     private void abrirChat(String amigo) {
         chat.getChildren().clear();
         userChatActual = amigo;
         tituloChat.setText(userChatActual);
-        // Comprobar si el chat ya está abierto, en caso contrario, crearlo
         if (!chatsAbiertos.containsKey(amigo)) {
             VBox chatActual = chatsAbiertos.get(amigo);
-            // Mostrar el chat
             chat.getChildren().add(chatActual);
         } else {
-            // Si ya está abierto, mostrar el chat
             System.out.println("recuperando chat con " + amigo);
             VBox chatExistente = chatsAbiertos.get(amigo);
             scrollPaneChats.setContent(chatExistente);
@@ -134,30 +134,30 @@ public class CPrincipal {
         }
     }
 
+    //Llama a la función que abre la ventana de solicitudes.
     @FXML
     public void clickSolicitudes() throws SQLException, IOException {
         main.abrirSolicitudes();
     }
 
+    //Función para envíar un mensaje, se activa cuando se clica sobre la imagen de enviar. Envía el mensaje al otro
+    //cliente y coloca el mensaje en el chat.
     @FXML
     public void enviarMensaje() throws IOException {
-        if (msg.getText().isEmpty() || userChatActual == null) {
-        return;
-    } else {
-        // Crear un HBox para contener el mensaje y alinearlo a la derecha
+        if (msg.getText().isEmpty() || userChatActual == null){
+            return;
+        }
+        else {
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER_RIGHT); // Alinear el contenido a la derecha
 
-        // Cargar el template del mensaje
         FXMLLoader loader = main.crearTemp("mensajes");
         hbox.getChildren().add(loader.load());
         CTemplateMensaje controller = loader.getController();
         controller.init(msg.getText(),getTiempoFormateado());
 
-        // Añadir el HBox al chat
         chatsAbiertos.get(userChatActual).getChildren().add(hbox);
 
-        // Enviar el mensaje al cliente remoto
         ClientInterface remoto = main.getcRemoto().getAmigosConectadosHM().get(userChatActual);
         remoto.recibirMensaje(msg.getText(), main.getcRemoto().getNombre());
         msg.setText("");
@@ -169,19 +169,17 @@ public class CPrincipal {
     }
     }
 
+    //Función que es llamada por otro cliente para que recibas el mensaje. Añade un mensaje al chat.
     public void recibirMensaje(String mensaje, String remitente) throws IOException {
-        // Crear un HBox para contener el mensaje y alinearlo a la izquierda
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER_LEFT);
 
-        // Cargar el template del mensaje
         FXMLLoader loader = main.crearTemp("mensajes");
         hbox.getChildren().add(loader.load());
         CTemplateMensaje controller = loader.getController();
         controller.setColorRec();
         controller.init(mensaje,getTiempoFormateado());
 
-        // Añadir el HBox al chat
         Platform.runLater(() -> {
             chatsAbiertos.get(remitente).getChildren().add(hbox);
         });
@@ -191,6 +189,8 @@ public class CPrincipal {
         });
     }
 
+    //Función para enviar imagenes. Es llamada cuando se arrastra una imagen al chat. Llama a recibir imagen en el cliente
+    //al que se le envía y coloca la imagen en el chat.
     public void enviarImagen(File archivo) {
         if(userChatActual == null) {
             return;
@@ -213,10 +213,12 @@ public class CPrincipal {
         }
     }
 
+    //Función para recibir imagen, llamada por el cliente que la envía. Llama a la función que pone la imagen en el chat.
     public void recibirImagen(byte[] imagen, String nombreArchivo,String remitente) throws IOException {
         initImagen(imagen, "left",remitente);
     }
 
+    //Función para colocar la imagen en el chat.
     private void initImagen(byte[] imagen, String op,String chat){
         HBox hbox = new HBox();
         if(op.equals("left")){
@@ -231,7 +233,6 @@ public class CPrincipal {
         imageView.setPreserveRatio(true);
         hbox.getChildren().add(imageView);
 
-        // Añadir el HBox al chat
         Platform.runLater(() -> {
             chatsAbiertos.get(chat).getChildren().add(hbox);
         });
@@ -241,17 +242,21 @@ public class CPrincipal {
         });
     }
 
+    //Función para abrir la ventana de añadir amigo.
     @FXML
     public void nuevoAmigo() throws SQLException, IOException {
         main.abrirNuevoAmigo();
     }
 
+    //Función que llama el cliente que envía solicitud a tu cuenta. Cambia la imagen a la campana sonando
+    //y añade la solicitud a las solicitudes pendientes.
     public void nuevaSolicitudRecibida(String solicitante, Image image) {
         solicitudes.setImage(image);
         solicitudesPendientes.add(solicitante);
         numSolis++;
     }
 
+    //Función que permite arrastrar las imagenes al chat.
     private void configurarDragAndDrop(ScrollPane target) {
         target.setOnDragOver(event -> {
             if (event.getGestureSource() != target && event.getDragboard().hasFiles()) {
@@ -259,7 +264,6 @@ public class CPrincipal {
             }
             event.consume();
         });
-
         target.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             if (db.hasFiles()) {
@@ -271,11 +275,10 @@ public class CPrincipal {
         });
     }
 
+    //Función que devuelve la hora y el minuto en formato HH:mm para poder colocarlos en el mensaje.
     private String getTiempoFormateado(){
-        // Obtener la hora actual
         LocalTime now = LocalTime.now();
 
-        // Definir el formato de la hora
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return now.format(formatter);
     }

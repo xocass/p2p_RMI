@@ -10,13 +10,16 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+//Ventana donde se listan las solicitudes de amistad
 public class CSolicitudes {
     @FXML
     private VBox boxSolicitudes;
+
     private ServerInterface server;
     private Client main;
     ArrayList<String> nicks;
 
+    //Iniciación de variables
     public void init(ServerInterface server, ArrayList<String> nicks, Client main) throws IOException {
         this.server=server;
         this.main=main;
@@ -24,6 +27,7 @@ public class CSolicitudes {
         actualizarListaSolicitudes();
     }
 
+    //Getters
     public ServerInterface getServer() {
         return server;
     }
@@ -36,6 +40,7 @@ public class CSolicitudes {
         return main;
     }
 
+    //Actualiza con VBox de la lista de solicitudes
     public void actualizarListaSolicitudes() throws IOException {
         boxSolicitudes.getChildren().clear();
         for (String nick : nicks) {
@@ -46,6 +51,7 @@ public class CSolicitudes {
         }
     }
 
+    //Función para volver a la ventana principal
     @FXML
     public void clickAtras() throws IOException, SQLException {
         main.abrirPrincipal();
